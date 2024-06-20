@@ -1,0 +1,20 @@
+<html>
+    <head></head>
+    <body>
+        <label for="elementname">Testing</label>                    
+        <div class="input-group date" data-target-input="nearest" id="elementname">
+            <input type="text" class="form-control datetimepicker-input" data-target="#elementname"/>
+            <div class="input-group-append" data-target="#elementname" data-toggle="datetimepicker">
+                <div class="input-group-text">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>
+<script>
+    $('#reservationdate').datetimepicker({
+        format: 'L'
+    });
+</script>

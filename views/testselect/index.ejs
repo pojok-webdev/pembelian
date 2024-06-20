@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  </head>
+  <body>
+    <select name="test" id="test" class="test">
+      <option value="pisang">BElimbing</option>
+      <option value="pisang">Pisang</option>
+      <option value="mangga">Mangga</option>
+      <option value="delima">Delima</option>
+      <option value="jeruk">Jeruk</option>
+      <option value="kedondong">Kedondong</option>
+    </select>
+
+    <select name="test2" id="test2" style="width:500px"></select>
+  </body>
+  <script>
+    $(document).ready(function(){
+      $('.test').select2()
+      $('#test').val('jeruk').change()
+
+      bebop = $("#test2").select2({
+        ajax:{
+          url:'/causecategoryselect2',
+          type:'post',
+          data:function(params){
+            var query = {
+              search:params.hasOwnProperty('term')?params.term:' ',type:'public'
+            }
+            console.log('cause query',query)
+            return query
+          },
+          dataType:'json',
+          processResults:function(data){
+            console.log("Process result",data)
+            return data
+          }
+       }
+      })
+      var option = new Option("Bebek", 8, true, true);
+      bebop.append(option).trigger('change');
+
+      bebop.trigger({
+        type:'select2.select',
+        params:{
+          data:{"id":8,"text":"Bebek"}
+        }
+      })
+})
+  </script>
+<script>
+if(false){
+
+  // Set up the Select2 control
+  $('#mySelect2').select2({
+      ajax: {
+          url: '/api/students'
+      }
+  });
+
+  // Fetch the preselected item, and add to the control
+  var studentSelect = $('#mySelect2');
+  $.ajax({
+      type: 'GET',
+      url: '/api/students/s/' + studentId
+  }).then(function (data) {
+      // create the option and append to Select2
+      var option = new Option(data.full_name, data.id, true, true);
+      studentSelect.append(option).trigger('change');
+
+      // manually trigger the `select2:select` event
+      studentSelect.trigger({
+          type: 'select2:select',
+          params: {
+              data: data
+          }
+      });
+  });
+
+}
+
+</script>
+</html>

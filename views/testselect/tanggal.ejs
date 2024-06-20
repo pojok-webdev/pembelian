@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>Test Tanggal</title>
+        <style>
+            .btn{
+                padding: 10px;
+                border: 2px solid blueviolet;
+            }
+        </style>
+    </head>
+    <body>
+        <select>
+            <option value="">
+                <button class="btn">1</button><button class="btn">2</button>
+            </option>
+        </select>
+        <script>
+            daysInMonth = (month,year)=>{
+                return new Date(year,month,0).getDate()
+            }
+            console.log('Jan',daysInMonth(1,2024))
+            console.log('Feb',daysInMonth(2,2024))
+            console.log('Mar',daysInMonth(3,2024))
+            console.log('Apr',daysInMonth(4,2024))
+            console.log('May',daysInMonth(5,2024))
+            console.log('Jun',daysInMonth(6,2024))
+            console.log('Jul',daysInMonth(7,2024))
+            console.log('Aug',daysInMonth(8,2024))
+            console.log('Sep',daysInMonth(9,2024))
+            console.log('Oct',daysInMonth(10,2024))
+            console.log('Nov',daysInMonth(11,2024))
+            console.log('Dec',daysInMonth(12,2024))
+        </script>
+    </body>
+</html>

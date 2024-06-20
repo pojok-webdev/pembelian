@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../commons/head') -%>
+  <link rel="stylesheet" href="/assets/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.css">
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <%- include('../commons/leftnavbar') -%>
+    <!-- Right navbar links -->
+    <%- include('../commons/rightnavbar')%>
+  </nav>
+  <!-- /.navbar -->
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+      <img src="/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light"><%= title %></span>
+    </a>
+
+    <!-- Sidebar -->
+    <%- include('../commons/sidebarmenu') -%>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><%= title %></h1>
+          </div>
+          <div class="col-sm-6">
+
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"></h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="tObj" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th width="10%">ID</th>
+                    <th width="40%">Nama</th>
+                    <th width="16%">Email</th>
+                    <th width="8%">Is Admin</th>
+                    <th width="8%">Create Ticket</th>
+                    <th width="8%">Can Verify Server</th>
+                    <th width="10%">Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <%-include('../commons/footer')%>
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+<%-include('useredit')%>
+<%- include('../custompages/addpage') -%>
+<%- include('../custompages/confirmation') -%>
+<script>isadmin="<%- cookies.isadmin -%>"</script>
+<!-- jQuery -->
+<script src="/assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/plugins/select2/js/select2.full.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/assets/plugins/jszip/jszip.min.js"></script>
+<script src="/assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/assets/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/assets/dist/js/demo.js"></script>
+<script src="/assets/app/common.js"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    customdisplay = (isadmin==="0")?"none":"block"
+    $('#mainmenu').click()
+    loadUsers = _ => {
+      $.ajax({
+        url:'/master/users/data',
+        dataType:'json'
+      })
+      .done(res=>{
+        console.log('get category clients',res)
+      })
+      .fail(err=>{
+        console.log('err category clients',err)
+      })
+    }
+    loadUsers()
+    $('#tObj').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+      ajax:{
+        url:'/master/users/data',
+      },
+      "columnDefs": [ 
+        {
+            "targets": 6,
+            "data": null,
+            "defaultContent":''
+              +'<div class="btn-group">'
+                +'<button type="button" class="btn btn-default">Action</button>'
+                +'<button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span></button>'
+                +'<div class="dropdown-menu" role="menu">'
+                  +'<a class="dropdown-item btnEditUser" style="cursor:pointer;display:'+customdisplay+'">Edit</a>'
+
+                  +'<a class="dropdown-item btnToggleCanCreateTicket" style="cursor:pointer;display:'+customdisplay+'">Toggle bisa create Ticket</a>'
+                  +'<a class="dropdown-item btnToggleCanVerifyServer" style="cursor:pointer;display:'+customdisplay+'">Toggle bisa verify Server</a>'
+
+                +'</div>'
+
+
+
+              +'</div>'
+        },
+        {
+          targets:5,
+          className:"canverifyserver"
+        },
+        {
+          targets:4,
+          className:"cancreateticket"
+        },
+        {
+          targets:3,
+          className:"isadmin"
+        },
+        {
+          targets:2,
+          className:"email"
+        },
+        {
+          targets:1,
+          className:"username"
+        },
+        {
+          targets:0,
+          className:'trid'
+        }],
+
+      dom:"Bfrtip",
+    });
+    if(isadmin==="0"){
+      console.log("Is Not Admin")
+      $('.btnEditUser').css('display','none')
+    }
+    if(isadmin==="1"){
+      console.log("Is Admin")
+    }
+    $('#tObj').on('click','.btnEditUser',function(){
+      $('#tObj tr').removeClass('selected')
+      tr = $(this).stairUp({level:4})
+      tr.addClass('selected')
+      $("#usertext").html(tr.find('.username').html())
+      $("#username").val(tr.find('.username').html())
+      $('#isadmin').val(tr.find('.isadmin').text())
+      $('#cancreateticket').val(tr.find('.cancreateticket').text())
+      $('#modal-edituser').modal()
+    })
+    $('#btnSave').on('click',function(){
+      $.ajax({
+        url:'/crud',
+        type:'post',
+        data:{
+          id:$('#tObj tr.selected').find('.trid').text(),
+          tableName:'userprivileges',
+          cols:[
+            {key:"isadmin",val:$('#isadmin').val()},
+            {key:"cancreateticket",val:$('#cancreateticket').val()},
+            {key:"canverifyserver",val:$('#canverifyserver').val()}
+          ]
+        }
+      })
+      .done(res=>{
+        console.log('success update user',res)
+        $('#tObj tr.selected').find('.isadmin').html($('#isadmin').val())
+        $('#tObj tr.selected').find('.cancreateticket').html($('#cancreateticket').val())
+        $('#tObj tr.selected').find('.canverifyserver').html($('#canverifyserver').val())
+      })
+      .fail(err=>{
+        console.log('Failed update user',err)
+      })
+    })
+    $('#tObj').on('click','.btnToggleCanCreateTicket',function(){
+      $('#tObj tr').removeClass('selected')
+      tr = $(this).stairUp({level:4})
+      tr.addClass('selected')
+      console.log("can create ticket",tr.find('.cancreateticket').text())
+      $.ajax({
+        url:'/crud',
+        type:'post',
+        data:{
+          id:$('#tObj tr.selected').find('.trid').text(),
+          tableName:'userprivileges',
+          cols:[
+            {key:"isadmin",val:tr.find('.isadmin').text()},
+            {key:"cancreateticket",val:(tr.find('.cancreateticket').text()==="1")?"0":"1"},
+            {key:"canverifyserver",val:tr.find('.canverifyserver').text()}
+          ]
+        }
+      })
+      .done(res=>{
+        console.log('success update user',res)
+        $('#tObj tr.selected').find('.cancreateticket').html((tr.find('.cancreateticket').text()==="1")?"0":"1")
+        $('#tObj tr.selected').find('.canverifyserver').html(tr.find('.canverifyserver').text())
+      })
+      .fail(err=>{
+        console.log('Failed update user',err)
+      })
+    })
+    $('#tObj').on('click','.btnToggleCanVerifyServer',function(){
+      $('#tObj tr').removeClass('selected')
+      tr = $(this).stairUp({level:4})
+      tr.addClass('selected')
+      console.log("can create ticket",tr.find('.cancverifyserver').text())
+      $.ajax({
+        url:'/crud',
+        type:'post',
+        data:{
+          id:$('#tObj tr.selected').find('.trid').text(),
+          tableName:'userprivileges',
+          cols:[
+            {key:"isadmin",val:tr.find('.isadmin').text()},
+            {key:"cancreateticket",val:tr.find('.cancreateticket').text()},
+            {key:"canverifyserver",val:(tr.find('.canverifyserver').text()==="1")?"0":"1"}
+          ]
+        }
+      })
+      .done(res=>{
+        console.log('success update user',res)
+        $('#tObj tr.selected').find('.canverifyserver').html((tr.find('.canverifyserver').text()==="1")?"0":"1")
+        $('#tObj tr.selected').find('.cancreateticket').html(tr.find('.cancreateticket').text())
+      })
+      .fail(err=>{
+        console.log('Failed update user',err)
+      })
+    })
+    
+  });
+</script>
+</body>
+</html>
