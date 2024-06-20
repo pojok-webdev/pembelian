@@ -60,6 +60,7 @@
                   <thead>
                   <tr>
                     <th width="10%">ID</th>
+                    <th >Produk ID</th>
                     <th width="20%">Produk</th>
                     <th width="20%">Partnumber</th>
                     <th width="20%">Brand</th>
@@ -150,7 +151,7 @@
       ],
       columnDefs:[
       {
-          "targets": 5,
+          "targets": 6,
           "data": null,
           "defaultContent":'<div class="btn-group">'
             +'<button type="button" class="btn btn-default">Aksi</button>'
@@ -164,20 +165,24 @@
               +'</div>'
       },
       {
-        "targets":4,
+        "targets":5,
         className:"description"
       },
       {
-        "targets":3,
+        "targets":4,
         className:"brand"
       },
       {
-        "targets":2,
+        "targets":3,
         className:"partnumber"
       },
       {
-        "targets":1,
+        "targets":2,
         className:"name"
+      },
+      {
+        "targets":1,
+        className:"product_id",visible:false
       },
       {
         "targets":0,
@@ -220,7 +225,7 @@
       $('#partnumber').val(tr.find('.partnumber').text())
       $('#description').val(tr.find('.description').text())
       $('#brand').val(tr.find('.brand').text())
-      $('#product').val(tr.attr('product_id').text())
+      $('#product').val(tr.attr('product_id')).change()
       $('#add-category').modal()
     })
     $('#btnUpdateProductDetail').on('click',function(){
@@ -235,6 +240,7 @@
             {key:'partnumber',val:$('#partnumber').val()},
             {key:'product_id',val:$('#product').select2('data')[0].id,},
             {key:'description',val:$('#description').val()},
+            {key:'brand',val:$('#brand').val()},
           ],
           conditions:[
             {key:"id",val:$('#tObj tbody tr.selected').find('.id').text()}
@@ -243,6 +249,7 @@
       })
       .done(res=>{
         console.log('Sukses udpate produk detail',res)
+        tbl.ajax().reload()
       })
       .fail(err=>{
         console.log('ERr',err)

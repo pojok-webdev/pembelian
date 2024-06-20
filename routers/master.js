@@ -33,7 +33,7 @@ getdata = (obj,callback)=> {
         case "productdetails":
             obj.i.productdetails.gets({},result=>{
                 callback(result.map(obj=>{
-                    return [obj.id,obj.name,obj.partnumber,obj.brand,obj.description]
+                    return [obj.id,obj.product_id,obj.name,obj.partnumber,obj.brand,obj.description]
                   }))
             })
         break
