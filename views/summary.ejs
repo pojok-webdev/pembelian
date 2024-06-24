@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('../commons/head') -%>
+  <%- include('./commons/head') -%>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
-    <%- include('../commons/leftnavbar') -%>
+    <%- include('./commons/leftnavbar') -%>
     
     <!-- Right navbar links -->
-    <%- include('../commons/rightnavbar') -%>
+    <%- include('./commons/rightnavbar') -%>
   </nav>
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../../index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <img src="/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light"><%= title %></span>
     </a>
 
     <!-- Sidebar -->
-    <%- include('../commons/sidebarmenu') -%>
+    <%- include('./commons/sidebarmenu') -%>
     <!-- /.sidebar -->
   </aside>
 
@@ -59,13 +59,16 @@
                 <table id="tObj" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th width="10%">ID</th>
-                    <th >Produk ID</th>
-                    <th width="20%">Produk</th>
-                    <th width="20%">Partnumber</th>
-                    <th width="20%">Brand</th>
-                    <th width="20%">Keterangan</th>
-                    <th width="10%">Aksi</th>
+                    <th width="10%">Submission date</th>
+                    <th width="10%">Budgeting Number</th>
+                    <th width="10%">Staff</th>
+                    <th width="10%">Item Name</th>
+                    <th width="10%">Kategori</th>
+                    <th width="10%">Amount</th>
+                    <th width="10%">Proposed Total Price</th>
+                    <th width="10%">Placement Location</th>
+                    <th width="10%">Status</th>
+                    <th width="10%">Action</th>
                   </tr>
                   </thead>
                   <tbody></tbody>
@@ -86,8 +89,8 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <%-include('../commons/footer')%>
-  <%-include('addProductDetail')%>
+  <%-include('./commons/footer')%>
+  <%-include('./submissions/addSubmissionModal')%>
   <script>tpe = '<%- type -%>'</script>
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -125,34 +128,34 @@
   $(function () {
     tbl = $('#tObj').DataTable({
       "paging": true,
-      "lengthChange": true,
-      "searching": true,
+      "lengthChange": false,
+      "searching": false,
       "ordering": true,
       "info": true,
-      "autoWidth": true,
+      "autoWidth": false,
       "responsive": true,
       ajax:{
-        url:"/master/productdetails/data",
+        url:"/summary/data/42000",
         type:'get',
       },
       dom:"Bfrtip",
+      order:[1,'desc'],
       buttons:[
       {
-        text: '<i class="fa-solid fa-ticket"></i> Penambahan Product Detail',
+        text: '<i class="fa-solid fa-ticket"></i> Pengajuan Pembelian',
         className:'btn btn-success addticket',
         action: function ( e, tObj, node, config ) {
           $('#btnSaveProductDetail').show()
           $('#btnUpdateProductDetail').hide()
-          $('#add-category').modal({
+          $('#add-submission').modal({
             backdrop:'static'
           })
           }
-        },
-        "excel"
+        }
       ],
       columnDefs:[
       {
-          "targets": 6,
+          "targets": 9,
           "data": null,
           "defaultContent":'<div class="btn-group">'
             +'<button type="button" class="btn btn-default">Aksi</button>'
@@ -166,28 +169,40 @@
               +'</div>'
       },
       {
+        "targets":8,
+        className:"status"
+      },
+      {
+        "targets":7,
+        className:"placement_location"
+      },
+      {
+        "targets":6,
+        className:"proposed_totalprice"
+      },
+      {
         "targets":5,
-        className:"description"
+        className:"amount"
       },
       {
         "targets":4,
-        className:"brand"
+        className:"category"
       },
       {
         "targets":3,
-        className:"partnumber"
+        className:"itemname"
       },
       {
         "targets":2,
-        className:"name"
+        className:"staff",visible:true
       },
       {
         "targets":1,
-        className:"product_id",visible:false
+        className:"budgeting_number"
       },
       {
         "targets":0,
-        className:"id"
+        className:"submission_date"
       },
       ],
       rowCallback: function (row, data) {
@@ -196,6 +211,82 @@
       }
     })
     ;
+    $('#peruntukan').select2({
+      ajax:{
+        url:'/select2datafactory3',
+        type:'post',
+        data:function(params){
+          var query = {
+            search:params.hasOwnProperty('term')?params.term:'',type:'public',
+            model:'peruntukan'
+          }
+          console.log('peruntukan',query)
+          return query
+        },
+        dataType:'json',
+        processResults:function(data){
+          console.log('peruntukan',data)
+          return data
+        }
+      }
+    })
+    $('#itemname').select2({
+      ajax:{
+        url:'/select2datafactory3',
+        type:'post',
+        data:function(params){
+          var query = {
+            search:params.hasOwnProperty('term')?params.term:'',type:'public',
+            model:'productparents'
+          }
+          console.log('itemname',query)
+          return query
+        },
+        dataType:'json',
+        processResults:function(data){
+          console.log('itemname',data)
+          return data
+        }
+      }
+    })
+    $('#proposedvendor').select2({
+      ajax:{
+        url:'/select2datafactory3',
+        type:'post',
+        data:function(params){
+          var query = {
+            search:params.hasOwnProperty('term')?params.term:'',type:'public',
+            model:'proposedvendor'
+          }
+          console.log('proposedvendor',query)
+          return query
+        },
+        dataType:'json',
+        processResults:function(data){
+          console.log('proposedvendor',data)
+          return data
+        }
+      }
+    })
+    $('#productdetail').select2({
+      ajax:{
+        url:'/select2datafactory3',
+        type:'post',
+        data:function(params){
+          var query = {
+            search:params.hasOwnProperty('term')?params.term:'',type:'public',
+            model:'productdetails'
+          }
+          console.log('productdetails',query)
+          return query
+        },
+        dataType:'json',
+        processResults:function(data){
+          console.log('productdetails',data)
+          return data
+        }
+      }
+    })
     $('#product').select2({
       ajax:{
         url:'/select2datafactory3',
