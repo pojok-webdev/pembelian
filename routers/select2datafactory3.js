@@ -1,5 +1,4 @@
 getData = (obj,callback) => {
-    console.log('ObeJe',obj)
     switch(obj.params.model){
         case 'product':
             obj.i.products.gets({search:obj.params.search},result=>{
@@ -29,83 +28,72 @@ getData = (obj,callback) => {
                 })})
             })
         break
-        case 'ap':
-            obj.i.aps.gets({search:params.search},result=>{
-                console.log('Result',result)
-                callback({results:result.map(ob=>{
-                    return {id:ob.id,text:ob.name}
-                })})
-              })
-        break
-        case 'backbone':
-            obj.i.backbone.gets({search:params.search},result=>{
-                console.log('Result',result)
-                callback({results:result.map(ob=>{
-                    return {id:ob.id,text:ob.name}
-                }).filter(ob=>{
-                    return ob.text.toLowerCase().includes(params.search.toLowerCase())
-                })})
-              })
-        break
-        case 'bts':
-            obj.i.bts.gets({search:params.search},result=>{
-                console.log('Result',result)
-                callback({results:result.map(ob=>{
-                    return {id:ob.id,text:ob.name}
-                }).filter(ob=>{
-                    return ob.text.toLowerCase().includes(params.search.toLowerCase())
-                })})
-              })
-        break
-        case 'core':
-            obj.i.cores.gets({search:params.search},result=>{
-                console.log('Result',result)
-                callback({results:result.map(ob=>{
-                    return {id:ob.id,text:ob.name}
-                })})
-              })
-        break
-        case 'datacenter':
-            obj.i.datacenters.gets({search:params.search},result=>{
-                console.log('Result',result)
-                callback({results:result.map(ob=>{
-                    return {id:ob.id,text:ob.name}
-                })})
-              })
-        break
-        case 'lastmile':
-            console.log('Lastmile Params',params)
-            obj.i.lastmile.gets({search:obj.params.search},result=>{
-                console.log('Result',result)
-                callback({results:result.map(ob=>{
-                    return {id:ob.id,text:ob.name}
-                }).filter(ob=>{
-                    return ob.text.toLowerCase().includes(params.search.toLowerCase())
-                })})
-              })
-        break        
-        case 'ptp':
-            obj.i.ptp.gets({search:params.search},result=>{
-                console.log('Result',result)
-                callback({results:result.map(ob=>{
-                    return {id:ob.id,text:ob.name}
-                })})
-              })
-        break
-        case 'vendor':
-                str = obj.i.crud.gets({
-                    tableName:obj.params.tableName,
-                    cols:obj.params.cols,
-                    conditions:obj.params.conditions
-                  })
-                  console.log('query str',str)
-                  doQuery(str,result=>{
-                    callback({results:result.map(ob=>{
-                        return {id:ob.id,text:ob.alias+" ("+ob.name+")"}
-                    })})
-                })
-        break
+        case 'peruntukan':
+            console.log('search param',obj.params.search)
 
+            obj.i.con.doQuery(obj.i.crud.gets({
+                tableName:'peruntukan',
+                cols:["id","name","description"],
+                orderby:[{key:"id",order:"desc"}],
+                conditions:[{key:"1",val:"1"}]
+            }),result=>{
+                callback({results:result.map(ob=>{
+                    return {id:ob.id,text:ob.name}
+                })
+                .filter(f=>{
+                    return f.text.toLowerCase().includes(obj.params.search.toLowerCase())
+                })
+                })
+            })
+        break
+        case 'productparents':
+            obj.i.con.doQuery(obj.i.crud.gets({
+                tableName:'productparents',
+                cols:["id","name","description"],
+                orderby:[{key:"id",order:"desc"}],
+                conditions:[{key:"1",val:"1"}]
+            }),result=>{
+                callback({results:result.map(ob=>{
+                    return {id:ob.id,text:ob.name}
+                })
+                .filter(f=>{
+                    return f.text.toLowerCase().includes(obj.params.search.toLowerCase())
+                })
+                })
+            })
+        break
+        case 'productdetails':
+            obj.i.con.doQuery(obj.i.crud.gets({
+                tableName:'productdetails',
+                cols:["id","partnumber","description"],
+                orderby:[{key:"id",order:"desc"}],
+                conditions:[{key:"1",val:"1"}]
+            }),result=>{
+                callback({results:result.map(ob=>{
+                    return {id:ob.id,text:ob.partnumber}
+                })
+                .filter(f=>{
+                    return f.text.toLowerCase().includes(obj.params.search.toLowerCase())
+                })
+                })
+            })
+        break
+        case 'proposedvendor':
+            obj.i.con.doQuery(obj.i.crud.gets({
+                tableName:'vendors',
+                cols:["id","name","address"],
+                orderby:[{key:"id",order:"desc"}],
+                conditions:[{key:"1",val:"1"}]
+            }),result=>{
+                callback({results:result.map(ob=>{
+                    return {id:ob.id,text:ob.name}
+                })
+                .filter(f=>{
+                    return f.text.toLowerCase().includes(obj.params.search.toLowerCase())
+                })
+                })
+            })
+        break
     }
 }
 module.exports = {

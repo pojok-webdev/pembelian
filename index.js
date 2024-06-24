@@ -188,6 +188,36 @@ i.app.get('/viewlogs/:mode',(req,res)=>{
   }
 
 })
+i.app.get('/summary/:mode/:id',(req,res)=>{
+  params = req.params
+  switch(params.mode){
+    case 'view':
+      res.render('summary',{
+        title:'Summary',pagename:'Summary',email:req.cookies.email,
+        type:params.mode
+      })
+      break
+    case 'data':
+      i.con.doQuery(i.summary.gets({}),result=>{
+        res.send({data:result.map(oj=>{
+          return [
+            oj.submission_date,
+            oj.budgeting_number,
+            oj.createuser,
+            oj.itemname,
+            oj.category,
+            oj.amount,
+            oj.proposed_totalprice,
+            oj.placement_location,
+            oj.status
+          ]
+        })})
+      })
+    break
+      default:
+
+  }
+})
 i.app.get('/calendar',(req,res)=>{
   res.render('calendar')
 })

@@ -11,6 +11,7 @@ users = require('./../models/users'),
 products = require('./../models/products'),
 productparents = require('./../models/productparents'),
 productdetails = require('./../models/productdetails'),
+summary = require('./../models/summary'),
 cookieParser = require('cookie-parser'),
 listRoute = require('./listRoute'),
 libText = require('./../libraries/text'),
@@ -42,5 +43,6 @@ module.exports = {
     select2:select2,select2b:select2b,select2datafactory3:select2datafactory3,master:master,
     users:users,
     products:products,productparents:productparents,productdetails:productdetails,
+    summary:summary,
     crud:crud
 }

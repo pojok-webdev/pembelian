@@ -27,6 +27,18 @@ update = (obj) => {
     console.log('SQL',sql)
     return sql
 }
+gets = obj => {
+    sql = 'select '+obj.cols.map(col=>{
+        return col
+    }).join()
+    sql+= ' '
+    sql+= 'from '+obj.tableName+' '
+    sql+= 'where '+obj.conditions.map(cond=>{
+        return cond.key+'='+cond.val+' '
+    })+' '
+    console.log('SQL Get',sql)
+    return sql
+}
 module.exports = {
-    backuptable:backuptable,create:create,update:update
+    backuptable:backuptable,create:create,update:update,gets:gets
 }
