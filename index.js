@@ -218,6 +218,24 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
 
   }
 })
+i.app.get('/kampret/:mode/:type',(req,res)=>{
+  params = req.params
+  console.log('Params',params)
+  switch(params.mode){
+    case 'data':
+      i.odoorouter.getData({i:i,type:params.type},result=>{
+        console.log("recuLt",result)
+        res.send({"data":result})
+      })
+    break
+    case 'view':
+      res.render('odoo/table',{
+        title:params.type,
+        pagename:params.type,email:'',type:params.type
+      })
+    break
+  }
+})
 i.app.get('/calendar',(req,res)=>{
   res.render('calendar')
 })

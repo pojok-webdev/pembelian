@@ -14,14 +14,17 @@
                   <div class="card-body">
                       <div class="form-group row ">
                           <label for="lblJenis" class="col-sm-4 col-form-label">Submission Date</label>
-                          <div class="col-sm-8">
-                            <input type="text">
+                          <div class="col-sm-8 input-group date" id="submissiondate" data-target-input="nearest">
+                            <input type="text" class="form-control_ datetimepicker-input" data-target="#submissiondate"/>
+                            <div class="input-group-append" data-target="#submissiondate" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="far fa-clock"></i></div>
+                            </div>
                           </div>
-                      </div>
+                        </div>
                       <div class="form-group row">
                         <label for="nama" class="col-sm-4 col-form-label">Staff Name</label>
                         <div class="col-sm-8">
-                            <input type="text">
+                            <input type="text" id="staffname">
                           </div>
                       </div>
                   </div>
@@ -32,15 +35,21 @@
                 <div class="card-body">
                     <div class="form-group row ">
                         <label for="lblJenis" class="col-sm-4 col-form-label">Implementation Date</label>
-                        <div class="col-sm-8">
-                          <input type="text">
-                        </div>
-                    </div>
+                        <div class="col-sm-8 input-group date" id="implementationdate" data-target-input="nearest">
+                          <input type="text" class="form-control_ datetimepicker-input" data-target="#implementationdate"/>
+                          <div class="input-group-append" data-target="#implementationdate" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="far fa-clock"></i></div>
+                          </div>
+                        </div>                    
+                      </div>
                     <div class="form-group row">
                       <label for="nama" class="col-sm-4 col-form-label">Purchase Date</label>
-                      <div class="col-sm-8">
-                          <input type="text">
+                      <div class="col-sm-8 input-group date" id="purchasedate" data-target-input="nearest">
+                        <input type="text" class="form-control_ datetimepicker-input" data-target="#purchasedate"/>
+                        <div class="input-group-append" data-target="#purchasedate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="far fa-clock"></i></div>
                         </div>
+                      </div>
                     </div>
                   <div class="form-group" style="display: none;">
                         <label for="inpKeterangan">Keterangan</label>
@@ -55,12 +64,7 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-body">
-                        <div class="form-group row ">
-                            <label for="subject" class="col-sm-4 col-form-label">Subject</label>
-                            <div class="col-sm-8">
-                              <input type="text" id="subject">
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -77,7 +81,7 @@
                           </div>
                       </div>
                       <div class="form-group row">
-                        <label for="nama" class="col-sm-4 col-form-label">Item Name</label>
+                        <label for="nama" class="col-sm-4 col-form-label">Kategori Produk</label>
                         <div class="col-sm-8">
                             <select id="itemname"></select>
                           </div>
@@ -110,8 +114,14 @@
               </div>
             </div>
             <div class="col-md-6">
-            <div class="card card-primary">
-                <div class="card-body">
+              <div class="card card-primary">
+                  <div class="card-body">
+                    <div class="form-group row ">
+                      <label for="subject" class="col-sm-4 col-form-label">Subject</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="subject">
+                      </div>
+                  </div>
                     <div class="form-group row ">
                         <label for="lblJenis" class="col-sm-4 col-form-label">Proposed Price</label>
                         <div class="col-sm-8">
@@ -129,7 +139,6 @@
                         <div class="col-sm-8">
                             <input class="form-controlx" id="discountlevel" >
                         </div>
-                        
                     </div>
                     <div class="form-group row">
                         <label for="proposedtotalprice" class="col-sm-4 col-form-label">Proposed Total Price</label>
@@ -144,7 +153,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnSaveGamas">Simpan</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnSaveSubmission">Simpan</button>
         </div>
       </div>
       <!-- /.modal-content -->

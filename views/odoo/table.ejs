@@ -16,7 +16,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../../index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <img src="/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light"><%= title %></span>
     </a>
@@ -59,13 +59,9 @@
                 <table id="tObj" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th width="10%">ID</th>
-                    <th >Produk ID</th>
-                    <th width="20%">Produk</th>
-                    <th width="20%">Partnumber</th>
-                    <th width="20%">Brand</th>
-                    <th width="20%">Keterangan</th>
-                    <th width="10%">Aksi</th>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Kategori Produk</th>
                   </tr>
                   </thead>
                   <tbody></tbody>
@@ -87,7 +83,6 @@
   </div>
   <!-- /.content-wrapper -->
   <%-include('../commons/footer')%>
-  <%-include('addProductDetail')%>
   <script>tpe = '<%- type -%>'</script>
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -98,11 +93,11 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+<script>type="<%- type -%>"</script>
 <script src="/assets/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables  & Plugins -->
-<script src="/assets/plugins/select2/js/select2.full.min.js"></script>
 <script src="/assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -123,140 +118,20 @@
 <!-- Page specific script -->
 <script>
   $(function () {
-    tbl = $('#tObj').DataTable({
+    $('#tObj').DataTable({
       "paging": true,
       "lengthChange": true,
-      "searching": true,
+      "searching": false,
       "ordering": true,
       "info": true,
       "autoWidth": true,
       "responsive": true,
       ajax:{
-        url:"/master/productdetails/data",
+        url:"/kampret/data/"+type,
         type:'get',
       },
       dom:"Bfrtip",
-      buttons:[
-      {
-        text: '<i class="fa-solid fa-ticket"></i> Penambahan Product Detail',
-        className:'btn btn-success addticket',
-        action: function ( e, tObj, node, config ) {
-          $('#btnSaveProductDetail').show()
-          $('#btnUpdateProductDetail').hide()
-          $('#add-category').modal({
-            backdrop:'static'
-          })
-          }
-        },
-        "excel"
-      ],
-      columnDefs:[
-      {
-          "targets": 6,
-          "data": null,
-          "defaultContent":'<div class="btn-group">'
-            +'<button type="button" class="btn btn-default">Aksi</button>'
-            +'<button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">'
-              +'<span class="sr-only">Toggle Dropdown</span></button>'
-              +'<div class="dropdown-menu dropdown-menu-right" role="menu">'
-                +'<a class="dropdown-item btnEditProduct" style="cursor:pointer;">Edit</a>'
-                +'<div class="dropdown-divider" style="display:none;"></div>'
-                +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;display:none;">Hapus</a>'
-              +'</div>'
-              +'</div>'
-      },
-      {
-        "targets":5,
-        className:"description"
-      },
-      {
-        "targets":4,
-        className:"brand"
-      },
-      {
-        "targets":3,
-        className:"partnumber"
-      },
-      {
-        "targets":2,
-        className:"name"
-      },
-      {
-        "targets":1,
-        className:"product_id",visible:false
-      },
-      {
-        "targets":0,
-        className:"id"
-      },
-      ],
-      rowCallback: function (row, data) {
-        console.log('datatables row data start',data[9])
-        $(row).attr('product_id',data[0])
-      }
-    })
-    ;
-    $('#product').select2({
-      ajax:{
-        url:'/select2datafactory3',
-        type:'post',
-        data:function(params){
-          var query = {
-            search:params.hasOwnProperty('term')?params.term:'',type:'public',
-            model:'productparents'
-          }
-          console.log('product',query)
-          return query
-        },
-        dataType:'json',
-        processResults:function(data){
-          console.log('product reult',data)
-          return data
-        }
-      }
-    })
-    $('#tObj').on('click','.btnEditProduct',function(){
-      $('#tObj tbody tr').removeClass('selected')
-      tr = $(this).stairUp({level:4})
-      tr.addClass('selected')
-      id = tr.find('.id').text()
-      console.log('add product detail')
-      $('#btnSaveProductDetail').hide()
-      $('#btnUpdateProductDetail').show()
-      $('#partnumber').val(tr.find('.partnumber').text())
-      $('#description').val(tr.find('.description').text())
-      $('#brand').val(tr.find('.brand').text())
-      $('#product').val(tr.attr('product_id')).change()
-      $('#add-category').modal()
-    })
-    $('#btnUpdateProductDetail').on('click',function(){
-      console.log('btnUpdateProduct invoked')
-      $.ajax({
-        url:'/crud',
-        type:'post',
-        data:{
-          tableName:'productdetails',
-          crudtype:'update',
-          cols:[
-            {key:'partnumber',val:$('#partnumber').val()},
-            {key:'product_id',val:$('#product').select2('data')[0].id,},
-            {key:'description',val:$('#description').val()},
-            {key:'brand',val:$('#brand').val()},
-          ],
-          conditions:[
-            {key:"id",val:$('#tObj tbody tr.selected').find('.id').text()}
-          ]
-        }
-      })
-      .done(res=>{
-        console.log('Sukses udpate produk detail',res)
-        tbl.ajax().reload()
-      })
-      .fail(err=>{
-        console.log('ERr',err)
-      })
-    })
-
+    });
   });
 </script>
 </body>

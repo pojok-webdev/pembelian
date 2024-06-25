@@ -1,6 +1,6 @@
 gets = (obj,callback) => {
     sql = 'select a.id,b.id product_id,b.name,a.partnumber,a.brand,a.description '
-        +'from productdetails a  '
+        +'from productdetails2 a  '
         +'left outer join productparents b  '
         +'on b.id=a.product_id '
     doQuery(sql,result=>{
@@ -10,7 +10,7 @@ gets = (obj,callback) => {
 }
 getbyproduct = (obj,callback) => {
     sql = 'select a.id,b.id product_id,b.name,a.partnumber,a.brand,a.description '
-        +'from productdetails a  '
+        +'from productdetails2 a  '
         +'left outer join productparents b  '
         +'on b.id=a.product_id '
         +'where b.id='+obj.product_id+' '

@@ -12,13 +12,16 @@ products = require('./../models/products'),
 productparents = require('./../models/productparents'),
 productdetails = require('./../models/productdetails'),
 summary = require('./../models/summary'),
+odooproductcategories = require('./../models/odooproductcategories'),
+odooproducts = require('./../models/odooproducts'),
 cookieParser = require('cookie-parser'),
 listRoute = require('./listRoute'),
 libText = require('./../libraries/text'),
 select2 = require('./../routers/select2'),
 select2b = require('./../routers/select2b'),
 select2datafactory3 = require('./../routers/select2datafactory3'),
-master = require("./../routers/master")
+master = require("./../routers/master"),
+odoorouter = require('./../routers/odooRouter')
 app.set('views', './views');
 app.set('view engine','ejs')
 app.use(express.static(__dirname + '/..'));
@@ -44,5 +47,7 @@ module.exports = {
     users:users,
     products:products,productparents:productparents,productdetails:productdetails,
     summary:summary,
+    odoorouter:odoorouter,
+    odooproducts:odooproducts,odooproductcategories:odooproductcategories,
     crud:crud
 }
