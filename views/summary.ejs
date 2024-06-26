@@ -126,6 +126,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/dist/js/demo.js"></script>
 <script src="/assets/app/common.js"></script>
+<script src="/js/libs/dates.js"></script>
 <!-- Page specific script -->
 <script>
   $(function () {
@@ -371,10 +372,12 @@
             {key:'year',val:'1994'},
             {key:'budgeting_number',val:'1223'},
             {key:'subject',val:$('#subject').val()},
-            {key:'submission_date',val:$('#submission_date').val()},
+            {key:'submission_date',val:getDt({date:$('#submissiondate input').val(),format:'mysql'})},
             {key:'staff_name',val:'bruno'},
-            {key:'implementation_target',val:$('#implementation_target').val()},
-            {key:'purchase_target',val:$('#purchase_target').val()}
+            {key:'implementation_target',val:getDt({date:$('#implementationdate input').val(),format:'mysql'})},
+            {key:'purchase_target',val:getDt({date:$('#purchasedate input').val(),format:'mysql'})}
+
+
           ]
         }
       })
@@ -387,18 +390,23 @@
           tableName:'fakesubmission_details',
           crudtype:'create',
           cols:[
+            {key:'submission_id',val:res.insertId},  
+            {key:'vendor_id',val:$('#proposedvendor').val()},
+            {key:'product_id',val:$('#productdetail').val()},
             {key:'itemname',val:$('#partnumber').val()},
             {key:'brand',val:$('#brand').val()},
             {key:'partnumber',val:$('#partnumber').val()},
             {key:'description',val:$('#description').val()},
             {key:'amount',val:$('#amount').val()},
             {key:'discountlevel',val:$('#discountlevel').val()},
-            {key:'proposed_vendor',val:$('#proposed_vendor').val()},
-            {key:'proposed_price',val:$('#proposed_price').val()},
-            {key:'proposed_totalprice',val:$('#proposed_totalprice').val()},
+            {key:'proposed_vendor',val:$('#proposedvendor').val()},
+            {key:'proposed_price',val:$('#proposedprice').val()},
+            {key:'proposed_totalprice',val:$('#proposedtotalprice').val()},
             {key:'vendor',val:$('#vendor').val()},
             {key:'purchase_reason',val:$('#purchase_reason').val()},
-            {key:'placement_location',val:$('#placement_location').val()}
+            {key:'placement_location',val:$('#placement_location').val()},
+            {key:'guarantee',val:$('#guarantee').val()},
+            {key:'note',val:$('#note').val()}
           ]
         }
       })
@@ -413,6 +421,7 @@
         console.log('Err fakesubmissions',err)
       })
     })
+
   });
 </script>
 </body>

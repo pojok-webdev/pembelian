@@ -1,38 +1,4 @@
 var i = require('./js/appInit')
-i.app.post('/doauth',(req,res)=>{
-  params = req.body
-  i.auth.doLogin({
-    i:i,params:params,res:res,req,req,redirpath:'/tickets/view/42000'
-  },result=>{
-    if(result.authenticated){
-      i.logging.writeLog({
-        createuser:result.username,subject:'Login '+result.email,description:'Login '+result.email,i:i
-      },logresult=>{
-        i.users.getprivilege({email:result.email},privilege=>{
-          if(privilege.length>0){
-            console.log('privilege',privilege)
-            res.cookie('cancreateticket',privilege[0].cancreateticket)
-            res.cookie('isadmin',privilege[0].isadmin)
-            res.cookie('canverifyserver',privilege[0].canverifyserver)
-          }else{
-            console.log('should set privilege')
-            console.log('can not create ticket2')
-            res.cookie('cancreateticket','0')
-            res.cookie('canverifyserver',0)
-          }
-        })
-        i.odoo.getOdooSession(session_id=>{
-          res.cookie('session_id',mysubstr)
-          res.cookie('username',result.username)
-          res.cookie('email',result.email)
-          res.redirect('/tickets/view/42000')
-        })
-      })
-    }else{
-      res.redirect('/login')
-    }
-  })
-})
 i.app.post('/select2datafactory3',(req,res)=>{
   params = req.body
   console.log('Model params',params)
@@ -217,6 +183,17 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
       default:
 
   }
+})
+i.app.get('/submissiondetail/:submission_id',(req,res)=>{
+  params = req.params
+  i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+    console.log('submissiondetails',result)
+    res.render('submissions/detail',{
+      title:'Submissiondetail',pagename:'Submissiondetail',email:'',itemname:'WRT54GL',
+      result:result
+    })
+  })
+
 })
 i.app.get('/kampret/:mode/:type',(req,res)=>{
   params = req.params

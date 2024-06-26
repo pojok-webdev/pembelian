@@ -98,3 +98,17 @@ extractDate = obj => {
 
   }
 }
+getDt = obj => {
+  console.log('getDt obj',obj)
+  switch(obj.format){
+    case 'mysql':
+      tmp = obj.date.split("/")
+      out = tmp[2]+'-'+tmp[0]+'-'+tmp[1]
+    break
+    default:
+      tmp = obj.date.split("/")
+      out = tmp[2]+'-'+tmp[0]+'-'+tmp[1]
+    break
+  }
+  return out
+}
