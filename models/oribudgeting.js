@@ -1419,8 +1419,9 @@ removeSubmissionDetailVendor = obj => {
     return sql
 },
 getSubmissionDetailVendor = obj => {
-    sql = 'select a.*,b.name from submissiondetails_vendors a '
+    sql = 'select a.*,b.name,c.id from submissiondetails_vendors a '
     sql+= 'left outer join vendors b on b.id=a.vendor_id '
+    sql+= 'left outer join submission_details c on c.id=a.submission_detail_id '
     sql+= 'where submission_detail_id = ' + obj.submission_detail_id + ' '
     console.log('getSubmissionDetailVendor sql',sql)
     return sql

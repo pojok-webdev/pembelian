@@ -167,6 +167,7 @@
               +'<span class="sr-only">Toggle Dropdown</span></button>'
               +'<div class="dropdown-menu dropdown-menu-right" role="menu">'
                 +'<a class="dropdown-item btnEditProduct" style="cursor:pointer;">Edit</a>'
+                +'<a class="dropdown-item btnSubmissionDetail" style="cursor:pointer;">Detail</a>'
                 +'<div class="dropdown-divider" style="display:none;"></div>'
                 +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;display:none;">Hapus</a>'
               +'</div>'
@@ -323,6 +324,9 @@
       $('#brand').val(tr.find('.brand').text())
       $('#product').val(tr.attr('product_id')).change()
       $('#add-category').modal()
+    })
+    $('#tObj').on('click','.btnSubmissionDetail',function(){
+      window.location.href = '/submissiondetail/32/15'
     })
     $('#btnUpdateProductDetail').on('click',function(){
       console.log('btnUpdateProduct invoked')

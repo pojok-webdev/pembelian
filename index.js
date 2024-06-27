@@ -43,7 +43,7 @@ i.app.post('/getdata',(req,res)=>{
     res.send({"data":result})
   })
 })
-i.app.get('/lists/:mode/:model',(req,res)=>{
+i.app.get('/lists/:mode/:model/:filter',(req,res)=>{
   params = req.params
   switch(params.mode){
     case 'view':
@@ -54,7 +54,12 @@ i.app.get('/lists/:mode/:model',(req,res)=>{
       })
     break
     case 'data':
-      i.listRoute.getData({type:params.model,i:i,session_id:req.cookies.session_id},result=>{
+      i.listRoute.getData({
+        type:params.model,
+        i:i,
+        session_id:req.cookies.session_id,
+        filter:params.filter
+      },result=>{
         res.send({'data':result})
       })
     break
@@ -184,14 +189,18 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
 
   }
 })
-i.app.get('/submissiondetail/:submission_id',(req,res)=>{
+i.app.get('/submissiondetail/:submission_id/:submission_detail_id',(req,res)=>{
   params = req.params
   i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
     console.log('submissiondetails',result)
-    res.render('submissions/detail',{
-      title:'Submissiondetail',pagename:'Submissiondetail',email:'',itemname:'WRT54GL',
-      result:result
+    i.con.doQuery(i.oribudgeting.getSubmissionDetailVendor({submission_detail_id:params.submission_detail_id}),vendors=>{
+      console.log('Vendors',vendors)
+      res.render('submissions/detail',{
+        title:'Submissiondetail',pagename:'Submissiondetail',email:'',itemname:'WRT54GL',
+        result:result[0],vendors:vendors
+      })
     })
+
   })
 
 })
