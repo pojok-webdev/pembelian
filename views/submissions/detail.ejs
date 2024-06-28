@@ -386,6 +386,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/dist/js/demo.js"></script>
 <!-- Page specific script -->
+ <script>submission_detail_id="<%- submission_detail_id -%>"</script>
 <script>
   $('#btnAddVendorComparation').on('click',function(){
     $('#add-vendor-comparation').modal()
@@ -408,6 +409,30 @@
           return data
         }
       }
+    })
+    $('#btnSaveVendorComparation').on('click',function(){
+      $.ajax({
+        url:'/crud',
+        type:'post',
+        data:{
+          tableName:'fakesubmissiondetails_vendors',
+          crudtype:'create',
+          cols:[
+            {key:'submission_detail_id',val:submission_detail_id},
+            {key:'vendor_id',val:$('#vendor').val()},
+            {key:'price',val:$('#dpp').val()},
+            {key:'ppn',val:$('#ppn').val()},
+            {key:'ongkir',val:$('#ongkir').val()},
+            {key:'createuser',val:'puji'}
+          ]
+        }
+      })
+      .done(res=>{
+        console.log('Res',res)
+      })
+      .fail(err=>{
+        console.log('Error save vendor comparation',err)
+      })
     })
 </script>
 </body>

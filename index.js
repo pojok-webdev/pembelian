@@ -197,7 +197,9 @@ i.app.get('/submissiondetail/:submission_id/:submission_detail_id',(req,res)=>{
       console.log('Vendors',vendors)
       res.render('submissions/detail',{
         title:'Submissiondetail',pagename:'Submissiondetail',email:'',itemname:'WRT54GL',
-        result:result[0],vendors:vendors
+        result:result[0],vendors:vendors,
+        submission_id:params.submission_id,
+        submission_detail_id:params.submission_detail_id
       })
     })
 

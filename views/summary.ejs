@@ -91,6 +91,7 @@
   <!-- /.content-wrapper -->
   <%-include('./commons/footer')%>
   <%-include('./submissions/addSubmissionModal')%>
+  <%-include('./submissions/addVerification')%>
   <script>tpe = '<%- type -%>'</script>
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -168,6 +169,7 @@
               +'<div class="dropdown-menu dropdown-menu-right" role="menu">'
                 +'<a class="dropdown-item btnEditProduct" style="cursor:pointer;">Edit</a>'
                 +'<a class="dropdown-item btnSubmissionDetail" style="cursor:pointer;">Detail</a>'
+                +'<a class="dropdown-item btnSubmissionVerification" style="cursor:pointer;">Verification</a>'
                 +'<div class="dropdown-divider" style="display:none;"></div>'
                 +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;display:none;">Hapus</a>'
               +'</div>'
@@ -215,7 +217,6 @@
         $(row).attr('product_id',data[0])
       }
     })
-    ;
     $('#peruntukan').select2({
       ajax:{
         url:'/select2datafactory3',
@@ -328,6 +329,12 @@
     $('#tObj').on('click','.btnSubmissionDetail',function(){
       window.location.href = '/submissiondetail/32/15'
     })
+    $('#tObj').on('click','.btnSubmissionVerification',function(){
+      tr = $(this).stairUp({level:4})
+      $('#tObj tbody tr').removeClass('selected')
+      tr.addClass('selected')
+      $('#add-verification').modal()
+    })
     $('#btnUpdateProductDetail').on('click',function(){
       console.log('btnUpdateProduct invoked')
       $.ajax({
@@ -425,7 +432,8 @@
         console.log('Err fakesubmissions',err)
       })
     })
-
+    $('#btnVerify').on('click',function(){})
+    $('#btnReject').on('click',function(){})
   });
 </script>
 </body>
