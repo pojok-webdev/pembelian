@@ -23,7 +23,16 @@ i.app.get('/logout',(req,res)=>{
 })
 i.app.post('/loginhandler',(req,res)=>{
   params = req.body
-  res.send(params)
+  i.pauth.login(params,result=>{
+    if(result.message==="ok"){
+      res.cookie('email',result.email)
+      res.redirect('/summary/view/42000')
+    }else{
+      res.send({"comment":"Password tidak cocok"})
+    }
+//    res.send(result)
+  })
+//  res.send(params)
 })
 i.app.get('/getcookies',(req,res)=>{
     console.log('Req Cookies',req.cookies.session_id)
@@ -180,7 +189,14 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
             oj.amount,
             oj.proposed_totalprice,
             oj.placement_location,
-            oj.status
+            oj.status,
+            oj.implementation_target,
+            oj.subject,
+            oj.purchase_target,
+            oj.totalprice,
+            oj.staff_name,
+            oj.submission_id,
+            oj.submission_detail_id
           ]
         })})
       })
@@ -206,6 +222,21 @@ i.app.get('/submissiondetail/:submission_id/:submission_detail_id',(req,res)=>{
   })
 
 })
+i.app.get('/finalprice/:mode/:submission_id',(req,res)=>{
+  params = req.params
+  i.con.doQuery(i.oribudgeting.getSubmissionById({id:params.submission_id}),result=>{
+    switch(params.mode){
+      case 'data':
+        console.log('Result',result)
+        res.send({obj:result})      
+      break
+      case 'view':
+        res.render('submissions/finalPrice',{
+          obj:result
+        })
+    }
+  })
+})
 i.app.get('/kampret/:mode/:type',(req,res)=>{
   params = req.params
   console.log('Params',params)
@@ -226,6 +257,9 @@ i.app.get('/kampret/:mode/:type',(req,res)=>{
 })
 i.app.get('/calendar',(req,res)=>{
   res.render('calendar')
+})
+i.app.get('/slogin',(req,res)=>{
+  
 })
 i.app.listen(i.setting.port,_=>{
     console.log('PadiTech Pembelian start at port ',i.setting.port)

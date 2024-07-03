@@ -68,6 +68,7 @@
                     <th width="10%">Proposed Total Price</th>
                     <th width="10%">Placement Location</th>
                     <th width="10%">Status</th>
+                    <th>Implementation Target</th>
                     <th width="10%">Action</th>
                   </tr>
                   </thead>
@@ -92,6 +93,7 @@
   <%-include('./commons/footer')%>
   <%-include('./submissions/addSubmissionModal')%>
   <%-include('./submissions/addVerification')%>
+  <%-include('./submissions/finalPrice')%>
   <script>tpe = '<%- type -%>'</script>
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -160,7 +162,7 @@
       ],
       columnDefs:[
       {
-          "targets": 9,
+          "targets": 10,
           "data": null,
           "defaultContent":'<div class="btn-group">'
             +'<button type="button" class="btn btn-default">Aksi</button>'
@@ -170,10 +172,15 @@
                 +'<a class="dropdown-item btnEditProduct" style="cursor:pointer;">Edit</a>'
                 +'<a class="dropdown-item btnSubmissionDetail" style="cursor:pointer;">Detail</a>'
                 +'<a class="dropdown-item btnSubmissionVerification" style="cursor:pointer;">Verification</a>'
+                +'<a class="dropdown-item btnFinalPrice" style="cursor:pointer;">Final Price</a>'
                 +'<div class="dropdown-divider" style="display:none;"></div>'
                 +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;display:none;">Hapus</a>'
               +'</div>'
               +'</div>'
+      },
+      {
+        "targets":9,
+        className:"implementation_target",visible:false
       },
       {
         "targets":8,
@@ -213,8 +220,15 @@
       },
       ],
       rowCallback: function (row, data) {
-        console.log('datatables row data start',data[9])
+        console.log('datatables row data start',data)
         $(row).attr('product_id',data[0])
+        $(row).attr('implementation_target',data[9])
+        $(row).attr('subject',data[10])
+        $(row).attr('purchase_target',data[11])
+        $(row).attr('totalprice',data[12])
+        $(row).attr('staff_name',data[13])
+        $(row).attr('submission_id',data[14])
+        $(row).attr('submission_detail_id',data[15])
       }
     })
     $('#peruntukan').select2({
@@ -327,13 +341,52 @@
       $('#add-category').modal()
     })
     $('#tObj').on('click','.btnSubmissionDetail',function(){
-      window.location.href = '/submissiondetail/32/15'
+      tr = $(this).stairUp({level:4})
+      $('#tObj tbody tr').removeClass('selected')
+      tr.addClass('selected')
+      window.location.href = '/submissiondetail/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
     })
     $('#tObj').on('click','.btnSubmissionVerification',function(){
       tr = $(this).stairUp({level:4})
       $('#tObj tbody tr').removeClass('selected')
       tr.addClass('selected')
       $('#add-verification').modal()
+    })
+    $('#tObj').on('click','.btnFinalPrice',function(){
+      tr = $(this).stairUp({level:4})
+      $('#tObj tbody tr').removeClass('selected')
+      tr.addClass('selected')
+      console.log('implementation target',tr.attr('implementation_target'))
+      $('#implementation_target').html(tr.attr('implementation_target'))
+      $('#fsubject').html(tr.attr('subject'))
+      console.log('subject',tr.attr('subject'))
+      $('#submission_date').html(tr.find('.submission_date').html())
+      $("#fpurchase_target").html(tr.attr("purchase_target"))
+      console.log('purchase_target',tr.attr("purchase_target"))
+      $("#ftotalprice").html(tr.attr("totalprice"))
+      console.log('totalprice',tr.attr("totalprice"))
+      $("#fstaff_name").html(tr.attr("staff_name"))
+      console.log('staff_name',tr.attr("staff_name"))
+      $("#finalprice").val(tr.attr("totalprice"))
+      $('#add-FinalPrice').modal()
+    })
+    $('#btnSaveFinalPrice').on('click',function(){
+      $.ajax({
+        url:'/crud',
+        type:'post',
+        data:{
+          tableName:'submission_details',
+          crudtype:'update',
+          cols:[
+            {key:'final_price',val:$('finalprice').val()}
+          ],
+          conditions:[
+            {key:'id',val:tr.attr('id')}
+          ]
+        }
+      })
+      .done(res=>{})
+      .fail(err=>{})
     })
     $('#btnUpdateProductDetail').on('click',function(){
       console.log('btnUpdateProduct invoked')

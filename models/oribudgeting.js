@@ -1120,7 +1120,7 @@ getProductByVendorCategory = obj => {
     sql+= 'order by b.name asc '
     console.log('getProductByVendor',sql)
     return sql
-}
+},
 disassociateProductsByVendor = obj => {
     sql = 'delete from products_vendors '
     sql+= 'where vendor_id = ' + obj.vendor_id + ' '

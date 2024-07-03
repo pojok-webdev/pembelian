@@ -1,9 +1,10 @@
 gets = (obj) => {
-    sql = 'select budgeting_number, '
+    sql = 'select a.id submission_id,b.id submission_detail_id,budgeting_number, '
     sql+= 'date_format(submission_date,"%d-%m-%Y")submission_date, '
     sql+= 'date_format(implementation_target,"%d-%m-%Y")implementation_target, '
     sql+= 'date_format(purchase_target,"%d-%m-%Y")purchase_target, '
     sql+= 'price,proposed_price, placement_location,proposed_totalprice,amount,'
+    sql+= 'subject,staff_name,'
     sql+= 'case b.status '
     sql+= 'when "1" then "Pending" '
     sql+= 'when "2" then "Approved Only" '
