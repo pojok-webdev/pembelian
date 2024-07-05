@@ -23,12 +23,6 @@ diff_minutes = (dt2, dt1) =>  {
    diff /= 60;
    return Math.abs(Math.round(diff));
   }
-
-// dt1 = new Date(2014,10,2);
-// dt2 = new Date(2014,10,3);
-// console.log(diff_minutes(dt1, dt2));
- 
-
 parseDate2 = obj => {
   switch(obj.format){
     case 'Y/d/m':
@@ -104,6 +98,10 @@ getDt = obj => {
     case 'mysql':
       tmp = obj.date.split("/")
       out = tmp[2]+'-'+tmp[0]+'-'+tmp[1]
+    break
+    case 'human':
+      tmp = obj.date.split('-')
+      out = tmp[1]+'/'+tmp[2]+'/'+tmp[0]
     break
     default:
       tmp = obj.date.split("/")

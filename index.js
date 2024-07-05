@@ -24,15 +24,20 @@ i.app.get('/logout',(req,res)=>{
 i.app.post('/loginhandler',(req,res)=>{
   params = req.body
   i.pauth.login(params,result=>{
+    console.log('LoginHandler',result)
     if(result.message==="ok"){
       res.cookie('email',result.email)
+      res.cookie('username',result.username)
       res.redirect('/summary/view/42000')
+      res.cookie('level', result.level)
+      res.cookie('role', result.role)
+      res.cookie('roleclass', result.roleclass)
+      res.cookie('division_id', result.division_id)
+      res.cookie('defaultRoute', result.defaultRoute)
     }else{
       res.send({"comment":"Password tidak cocok"})
     }
-//    res.send(result)
   })
-//  res.send(params)
 })
 i.app.get('/getcookies',(req,res)=>{
     console.log('Req Cookies',req.cookies.session_id)
@@ -173,7 +178,7 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
   switch(params.mode){
     case 'view':
       res.render('summary',{
-        title:'Summary',pagename:'Summary',email:req.cookies.email,
+        title:'Summary',pagename:'Summary',email:req.cookies.email,username:req.cookies.username,
         type:params.mode
       })
       break
@@ -253,13 +258,18 @@ i.app.get('/kampret/:mode/:type',(req,res)=>{
         pagename:params.type,email:'',type:params.type
       })
     break
+    case 'select2':
+      i.odoorouter.getData({i:i,type:params.type},result=>{
+        res.send({results:result.map(r=>{
+          return {id:r[0],text:r[1]}
+        })
+      })
+    })
+    break
   }
 })
 i.app.get('/calendar',(req,res)=>{
   res.render('calendar')
-})
-i.app.get('/slogin',(req,res)=>{
-  
 })
 i.app.listen(i.setting.port,_=>{
     console.log('PadiTech Pembelian start at port ',i.setting.port)

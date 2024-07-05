@@ -94,6 +94,28 @@ getData = (obj,callback) => {
                 })
             })
         break
+        case 'odooproductparents':
+            obj.i.odoorouter.getData({i:obj.i,type:'odooproductcategories'},result=>{
+                callback({results:result.map(r=>{
+                  return {id:r[0],text:r[1]}
+                }).filter(f=>{
+                    return f.text.toLowerCase().includes(obj.params.search.toLowerCase())
+                })
+              })
+            })
+        break
+        case 'odooproductdetails':
+            obj.i.odoorouter.getData({
+                i:obj.i,type:'odooproducts',
+                category_id:obj.category_id
+            },result=>{
+                callback({results:result.map(r=>{
+                    console.log('R',r)
+                  return {id:r[0],text:r[1]}
+                })
+              })
+            })
+        break
     }
 }
 module.exports = {

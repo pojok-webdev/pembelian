@@ -130,6 +130,7 @@
 <script src="/assets/dist/js/demo.js"></script>
 <script src="/assets/app/common.js"></script>
 <script src="/js/libs/dates.js"></script>
+<script>username="<%- username -%>"</script>
 <!-- Page specific script -->
 <script>
   $(function () {
@@ -152,6 +153,14 @@
         text: '<i class="fa-solid fa-ticket"></i> Pengajuan Pembelian',
         className:'btn btn-success addticket',
         action: function ( e, tObj, node, config ) {
+          toDate = getDt({
+            date:getTodayDate(),
+            format:'human'
+          })
+          $('#implementationdate input').val(toDate)
+          $('#submissiondate input').val(toDate)
+          $('#purchasedate input').val(toDate)
+          $('#staffname').val(username)
           $('#btnSaveProductDetail').show()
           $('#btnUpdateProductDetail').hide()
           $('#add-submission').modal({
@@ -257,7 +266,8 @@
         data:function(params){
           var query = {
             search:params.hasOwnProperty('term')?params.term:'',type:'public',
-            model:'productparents'
+            //model:'productparents',
+            model:'odooproductparents'
           }
           console.log('itemname',query)
           return query
@@ -269,6 +279,7 @@
         }
       }
     })
+
     $('#proposedvendor').select2({
       ajax:{
         url:'/select2datafactory3',
@@ -295,7 +306,9 @@
         data:function(params){
           var query = {
             search:params.hasOwnProperty('term')?params.term:'',type:'public',
-            model:'productdetails'
+            category_id:$('#itemname').val(),
+            //model:'productdetails',
+            model:'odooproductdetails'
           }
           console.log('productdetails',query)
           return query
@@ -363,11 +376,11 @@
       $('#submission_date').html(tr.find('.submission_date').html())
       $("#fpurchase_target").html(tr.attr("purchase_target"))
       console.log('purchase_target',tr.attr("purchase_target"))
-      $("#ftotalprice").html(tr.attr("totalprice"))
-      console.log('totalprice',tr.attr("totalprice"))
+      $("#ftotalprice").html(tr.attr("totalprice").toLocaleString())
+      console.log('totalprice',tr.attr("totalprice").toLocaleString())
       $("#fstaff_name").html(tr.attr("staff_name"))
       console.log('staff_name',tr.attr("staff_name"))
-      $("#finalprice").val(tr.attr("totalprice"))
+      $("#finalprice").val(tr.attr("totalprice").toLocaleString())
       $('#add-FinalPrice').modal()
     })
     $('#btnSaveFinalPrice').on('click',function(){
