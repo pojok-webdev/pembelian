@@ -107,7 +107,7 @@ getData = (obj,callback) => {
         case 'odooproductdetails':
             obj.i.odoorouter.getData({
                 i:obj.i,type:'odooproducts',
-                category_id:obj.category_id
+                category_id:obj.params.category_id
             },result=>{
                 callback({results:result.map(r=>{
                     console.log('R',r)
@@ -116,6 +116,39 @@ getData = (obj,callback) => {
               })
             })
         break
+        case 'categoriespanji':
+            obj.i.con.doQuery(obj.i.crud.gets({
+                tableName:'categoriespanji',
+                cols:["pcategory","categorypath"],
+                orderby:[{key:"id",order:"desc"}],
+                conditions:[{key:"1",val:"1"}]
+            }),result=>{
+                callback({results:result.map(ob=>{
+                    return {id:ob.pcategory,text:ob.categorypath}
+                })
+                .filter(f=>{
+                    return f.text.toLowerCase().includes(obj.params.search.toLowerCase())
+                })
+                })
+            })
+        break
+        case 'productspanji':
+            obj.i.con.doQuery(obj.i.crud.gets({
+                tableName:'productspanji',
+                cols:["sku","nama"],
+                orderby:[{key:"id",order:"desc"}],
+                conditions:[{key:"pcategory",val:obj.params.category_id}]
+            }),result=>{
+                callback({results:result.map(ob=>{
+                    return {id:ob.sku,text:ob.nama}
+                })
+                .filter(f=>{
+                    return f.text.toLowerCase().includes(obj.params.search.toLowerCase())
+                })
+                })
+            })
+        break
+
     }
 }
 module.exports = {

@@ -34,7 +34,7 @@ gets = obj => {
     sql+= ' '
     sql+= 'from '+obj.tableName+' '
     sql+= 'where '+obj.conditions.map(cond=>{
-        return cond.key+'='+cond.val+' '
+        return cond.key+'="'+cond.val+'" '
     })+' '
     console.log('SQL Get',sql)
     return sql

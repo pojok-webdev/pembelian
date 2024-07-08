@@ -1,0 +1,47 @@
+<div class="modal fade" id="add-category">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content bg">
+      <div class="modal-header">
+        <h4 class="modal-title">Penambahan Produk Detail<span id="modalAddProductDetail"></span></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-body">
+                  <div class="form-group" style="display: block;">
+                      <label for="client">Produk</label>
+                      <select class="form-control partnerselect2" id="product" style="width: 100%;"></select>
+                  </div>
+                  <div class="form-group">
+                      <label for="nama">Brand</label>
+                      <input class="form-control" id="brand" style="width: 100%;">
+                    </div>
+                  <div class="form-group">
+                    <label for="">Partnumber</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="partnumber">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="">Keterangan</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="description">
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnSaveProductDetail">Simpan</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnUpdateProductDetail">Update</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

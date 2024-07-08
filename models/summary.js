@@ -27,6 +27,24 @@ gets = (obj) => {
     sql+= 'order by b.createdate desc '
     return sql
 }
+storeSubmissionDetail = obj => {
+    sql = 'insert into deletedsubmission_details select * from submission_details where id= '+obj.id+' '
+    return sql
+}
+removeSubmissionDetail = obj => {
+    sql = 'delete from submission_details where id='+obj.id +' '
+    return sql
+}
+storeSubmission = obj => {
+    sql = 'insert into deletedsubmissions select * from submissions where id= '+obj.id+' '
+    return sql
+}
+removeSubmission = (obj) => {
+    sql = 'delete from submissions where id='+obj.id+' '
+    return sql
+}
 module.exports = {
-    gets:gets
+    gets:gets,
+    storeSubmissionDetail:storeSubmissionDetail,removeSubmissionDetail:removeSubmissionDetail,
+    storeSubmission:storeSubmission,removeSubmission:removeSubmission
 }

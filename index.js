@@ -10,7 +10,9 @@ i.app.post('/select2datafactory3',(req,res)=>{
   })
 })
 i.app.get('/login',(req,res)=>{
-  res.render('commons/login')
+  res.render('commons/login',{
+    curpath:'/login'
+  })
 })
 i.app.get('/logout',(req,res)=>{
   i.logging.writeLog({
@@ -18,22 +20,41 @@ i.app.get('/logout',(req,res)=>{
     ,subject:'Logout '+req.cookies.email
     ,description:'Logout '+req.cookies.email,i:i
   },h=>{
-    res.render('commons/login')
+    res.clearCookie('email')
+    res.clearCookie('username')
+    res.render('commons/login',{
+      curpath:'/logout'
+    })
   })
 })
 i.app.post('/loginhandler',(req,res)=>{
   params = req.body
+  console.log("params got",params)
   i.pauth.login(params,result=>{
     console.log('LoginHandler',result)
     if(result.message==="ok"){
       res.cookie('email',result.email)
       res.cookie('username',result.username)
-      res.redirect('/summary/view/42000')
       res.cookie('level', result.level)
       res.cookie('role', result.role)
       res.cookie('roleclass', result.roleclass)
       res.cookie('division_id', result.division_id)
       res.cookie('defaultRoute', result.defaultRoute)
+      if(params.hasOwnProperty('curpath')){
+        switch(params.curpath){
+          case 'login':
+            res.redirect('/summary/view/42000')
+          break
+          case 'logout':
+            res.redirect('/summary/view/42000')
+          break
+          default:
+            res.redirect(params.curpath)
+          break
+        }
+      }else{
+        res.redirect('/summary/view/42000')
+      }
     }else{
       res.send({"comment":"Password tidak cocok"})
     }
@@ -87,23 +108,29 @@ i.app.get('/testsession',(req,res)=>{
 i.app.get('/master/:type/:mode',(req,res)=>{
   params = req.params
   console.log('cookies',req.cookies)
-  switch(params.mode){
-    case "data":
-      i.master.getdata({type:params.type,i:i,session_id:req.cookies.session_id},objs=>{
-        //console.log("objs",objs)
-        res.send({"data":objs})
-      })    
-    break
-    case "view":
-      res.render(i.master.getpage({type:params.type}),{
-        title:i.libText.UpFirstLetter({text:params.type}),
-        pagename:params.type,
-        type:params.type,
-        email:'',//req.cookies.email,
-        cookies:req.cookies,
-        //username:i.libText.UpFirstLetter({text:req.cookies.username})
-      })    
-    break
+  if(req.cookies.hasOwnProperty('email')){
+    switch(params.mode){
+      case "data":
+        i.master.getdata({type:params.type,i:i,session_id:req.cookies.session_id},objs=>{
+          //console.log("objs",objs)
+          res.send({"data":objs})
+        })    
+      break
+      case "view":
+        res.render(i.master.getpage({type:params.type}),{
+          title:i.libText.UpFirstLetter({text:params.type}),
+          pagename:params.type,
+          type:params.type,
+          email:req.cookies.email,
+          cookies:req.cookies,
+          username:i.libText.UpFirstLetter({text:req.cookies.username})
+        })    
+      break
+    }
+  }else{
+    res.render('commons/login',{
+      curpath:'/master/'+params.type+'/'+params.mode
+    })
   }
 })
 i.app.post('/crud',(req,res)=>{
@@ -176,6 +203,13 @@ i.app.get('/viewlogs/:mode',(req,res)=>{
 i.app.get('/summary/:mode/:id',(req,res)=>{
   params = req.params
   switch(params.mode){
+    case 'viewpanji':
+      console.log('view panji')
+      res.render('summarypanji',{
+        title:'Summary Panji',pagename:'Summary',email:req.cookies.email,username:req.cookies.username,
+        type:params.mode
+      })
+    break
     case 'view':
       res.render('summary',{
         title:'Summary',pagename:'Summary',email:req.cookies.email,username:req.cookies.username,
@@ -265,6 +299,27 @@ i.app.get('/kampret/:mode/:type',(req,res)=>{
         })
       })
     })
+    break
+  }
+})
+i.app.get('/dobackupremove/:type/:id',(req,res)=>{
+  params = req.params
+  switch(params.type){
+    case 'submission_details':
+      i.con.doQuery(i.summary.storeSubmissionDetail({id:params.id}),stored=>{
+        console.log('submission detail id',stored,'stored')
+        i.con.doQuery(i.summary.removeSubmissionDetail({id:params.id}),removed=>{
+          console.log('submission detail id',removed,'removed')
+        })
+      })
+    break
+    case 'submissions':
+      i.con.doQuery(i.summary.storeSubmission({id:params.id}),stored=>{
+        console.log('submission id',stored,'stored')
+        i.con.doQuery(i.summary.removeSubmission({id:params.id}),removed=>{
+          console.log('submission id',removed,'removed')
+        })
+      })
     break
   }
 })
