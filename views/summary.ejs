@@ -503,36 +503,6 @@
   });
 </script>
 
-<script>
-  getCountInYear = callback =>{
-    $.ajax({
-        url:'/crud',
-        type:'post',
-        data:{
-          tableName:'fakesubmissions',
-          crudtype:'select',
-          cols:[
-            {key:'final_price',val:$('finalprice').val()}
-          ],
-          conditions:[
-            {key:'id',val:tr.attr('id')}
-          ]
-        }
-      })
-      .done(res=>{})
-      .fail(err=>{})
-  }
-  getMaxNum = callback => {}
-  createBudgetingNumber = _ => {}
-  getCountInYear(cntInYear=>{
-    getMaxNum(maxNumInYear=>{
-        if(cntInYear>0){
-            let budgeting_number = createBudgetingNumber(maxNumInYear)
-        }else{
-            let budgeting_number = createBudgetingNumber(1)
-        }
-    })
-})
-</script>
+
 </body>
 </html>

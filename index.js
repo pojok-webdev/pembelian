@@ -160,7 +160,7 @@ i.app.post('/crud',(req,res)=>{
         }
       )
     break
-    case 'gets':
+    /*case 'gets':
       i.con.doQuery(
         i.crud.gets({
           tableName:'applogs',
@@ -168,6 +168,19 @@ i.app.post('/crud',(req,res)=>{
           orderby:[{key:"id",order:"desc"}],
           conditions:[{key:"1",val:"1"}]
         })
+      )
+    break*/
+    case 'gets':
+      i.con.doQuery(
+        i.crud.gets({
+          tableName:params.tableName,
+          cols:params.cols,
+          orderby:[{key:"id",order:"desc"}],
+          groupby:params.groupby,
+          conditions:params.conditions
+        }),result=>{
+          res.send(result)
+        }
       )
     break
   }
@@ -206,7 +219,9 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
     case 'viewpanji':
       console.log('view panji')
       res.render('summarypanji',{
-        title:'Summary Panji',pagename:'Summary',email:req.cookies.email,username:req.cookies.username,
+        title:'Summary',pagename:'Summary',
+        email:req.cookies.email,
+        username:req.cookies.username,
         type:params.mode
       })
     break
@@ -235,7 +250,9 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
             oj.totalprice,
             oj.staff_name,
             oj.submission_id,
-            oj.submission_detail_id
+            oj.submission_detail_id,
+            oj.product_id,
+            oj.pcategory
           ]
         })})
       })

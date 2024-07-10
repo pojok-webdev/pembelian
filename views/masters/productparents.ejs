@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('../commons/head') -%>
+  <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.css">
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
@@ -117,6 +118,7 @@
 <!-- Page specific script -->
 <script>
   $(function () {
+    $('#mainmenu').click()
     tbl = $('#tObj').DataTable({
       "paging": true,
       "lengthChange": true,

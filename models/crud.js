@@ -28,6 +28,7 @@ update = (obj) => {
     return sql
 }
 gets = obj => {
+    console.log("OBJ gets",obj)
     sql = 'select '+obj.cols.map(col=>{
         return col
     }).join()
@@ -36,6 +37,9 @@ gets = obj => {
     sql+= 'where '+obj.conditions.map(cond=>{
         return cond.key+'="'+cond.val+'" '
     })+' '
+    if(obj.hasOwnProperty('groupby')){
+        sql+= 'group by '+obj.groupby.join()
+    }
     console.log('SQL Get',sql)
     return sql
 }

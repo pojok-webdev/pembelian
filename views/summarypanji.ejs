@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('./commons/head') -%>
+  <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.css">
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
@@ -91,7 +92,7 @@
   </div>
   <!-- /.content-wrapper -->
   <%-include('./commons/footer')%>
-  <%-include('./submissions/addSubmissionModal')%>
+  <%-include('./submissionspanji/addSubmissionModal')%>
   <%-include('./submissions/addVerification')%>
   <%-include('./submissions/finalPrice')%>
   <script>tpe = '<%- type -%>'</script>
@@ -130,10 +131,12 @@
 <script src="/assets/dist/js/demo.js"></script>
 <script src="/assets/app/common.js"></script>
 <script src="/js/libs/dates.js"></script>
+<script src="/libraries/submissions.js"></script>
 <script>username="<%- username -%>"</script>
 <!-- Page specific script -->
 <script>
   $(function () {
+    $('#mainmenu').click()
     tbl = $('#tObj').DataTable({
       "paging": true,
       "lengthChange": false,
@@ -179,6 +182,8 @@
               +'<span class="sr-only">Toggle Dropdown</span></button>'
               +'<div class="dropdown-menu dropdown-menu-right" role="menu">'
                 +'<a class="dropdown-item btnEditProduct" style="cursor:pointer;">Edit</a>'
+                +'<a class="dropdown-item btnDuplicate" style="cursor:pointer;">Duplicate</a>'
+
                 +'<a class="dropdown-item btnSubmissionDetail" style="cursor:pointer;">Detail</a>'
                 +'<a class="dropdown-item btnSubmissionVerification" style="cursor:pointer;">Verification</a>'
                 +'<a class="dropdown-item btnFinalPrice" style="cursor:pointer;">Final Price</a>'
@@ -230,7 +235,7 @@
       ],
       rowCallback: function (row, data) {
         console.log('datatables row data start',data)
-        $(row).attr('product_id',data[0])
+        $(row).attr('product_id',data[16])
         $(row).attr('implementation_target',data[9])
         $(row).attr('subject',data[10])
         $(row).attr('purchase_target',data[11])
@@ -238,6 +243,7 @@
         $(row).attr('staff_name',data[13])
         $(row).attr('submission_id',data[14])
         $(row).attr('submission_detail_id',data[15])
+        $(row).attr('pcategory',data[16])
       }
     })
     $('#peruntukan').select2({
@@ -279,26 +285,6 @@
         }
       }
     })
-
-    $('#proposedvendor').select2({
-      ajax:{
-        url:'/select2datafactory3',
-        type:'post',
-        data:function(params){
-          var query = {
-            search:params.hasOwnProperty('term')?params.term:'',type:'public',
-            model:'proposedvendor'
-          }
-          console.log('proposedvendor',query)
-          return query
-        },
-        dataType:'json',
-        processResults:function(data){
-          console.log('proposedvendor',data)
-          return data
-        }
-      }
-    })
     $('#productdetail').select2({
       ajax:{
         url:'/select2datafactory3',
@@ -320,28 +306,30 @@
         }
       }
     })
-    $('#productdetail').on('change',function(){
-      $('#partnumber').val($('#productdetail').val())
-    })
-    $('#product').select2({
+    $('#proposedvendor').select2({
       ajax:{
         url:'/select2datafactory3',
         type:'post',
         data:function(params){
           var query = {
             search:params.hasOwnProperty('term')?params.term:'',type:'public',
-            model:'productparents'
+            model:'proposedvendor'
           }
-          console.log('product',query)
+          console.log('proposedvendor',query)
           return query
         },
         dataType:'json',
         processResults:function(data){
-          console.log('product reult',data)
+          console.log('proposedvendor',data)
           return data
         }
       }
     })
+
+    $('#productdetail').on('change',function(){
+      $('#partnumber').val($('#productdetail').val())
+    })
+
     $('#tObj').on('click','.btnEditProduct',function(){
       $('#tObj tbody tr').removeClass('selected')
       tr = $(this).stairUp({level:4})
@@ -441,69 +429,138 @@
       format: 'L',//defaultDate:getToDate()
     })
     $('#btnSaveSubmission').on('click',function(){
-      $.ajax({
-        url:'/crud/',
-        type:'post',
-        data:{
-          tableName:'fakesubmissions',
-          crudtype:'create',
-          cols:[
-            {key:'quarter',val:1},
-            {key:'year',val:'1994'},
-            {key:'budgeting_number',val:'1223'},
-            {key:'subject',val:$('#subject').val()},
-            {key:'submission_date',val:getDt({date:$('#submissiondate input').val(),format:'mysql'})},
-            {key:'staff_name',val:'bruno'},
-            {key:'implementation_target',val:getDt({date:$('#implementationdate input').val(),format:'mysql'})},
-            {key:'purchase_target',val:getDt({date:$('#purchasedate input').val(),format:'mysql'})}
+      getBudgetNumber(
+        budgetNumber=>{
+          $.ajax({
+            url:'/crud/',
+            type:'post',
+            data:{
+              tableName:'fakesubmissions',
+              crudtype:'create',
+              cols:[
+                {key:'quarter',val:1},
+                {key:'year',val:'1994'},
+                {key:'budgeting_number',val:budgetNumber},
+                {key:'subject',val:$('#subject').val()},
+                {key:'submission_date',val:getDt({date:$('#submissiondate input').val(),format:'mysql'})},
+                {key:'staff_name',val:'bruno'},
+                {key:'implementation_target',val:getDt({date:$('#implementationdate input').val(),format:'mysql'})},
+                {key:'purchase_target',val:getDt({date:$('#purchasedate input').val(),format:'mysql'})}
 
 
-          ]
+              ]
+            }
+          })
+          .done(res=>{
+            console.log('Res fakesubmissions',res)
+            $.ajax({
+            url:'/crud/',
+            type:'post',
+            data:{
+              tableName:'fakesubmission_details',
+              crudtype:'create',
+              cols:[
+                {key:'submission_id',val:res.insertId},  
+                {key:'vendor_id',val:$('#proposedvendor').val()},
+                {key:'product_id',val:$('#productdetail').val()},
+                {key:'itemname',val:$('#partnumber').val()},
+                {key:'brand',val:$('#brand').val()},
+                {key:'partnumber',val:$('#partnumber').val()},
+                {key:'description',val:$('#description').val()},
+                {key:'amount',val:$('#amount').val()},
+                {key:'discountlevel',val:$('#discountlevel').val()},
+                {key:'proposed_vendor',val:$('#proposedvendor').val()},
+                {key:'proposed_price',val:$('#proposedprice').val()},
+                {key:'proposed_totalprice',val:$('#proposedtotalprice').val()},
+                {key:'vendor',val:$('#vendor').val()},
+                {key:'purchase_reason',val:$('#purchase_reason').val()},
+                {key:'placement_location',val:$('#placement_location').val()},
+                {key:'guarantee',val:$('#guarantee').val()},
+                {key:'note',val:$('#note').val()}
+              ]
+            }
+          })
+          .done(res=>{
+            console.log('Res fakesubmissiondetails',res)
+          })
+          .fail(err=>{
+            console.log('Err fakesubmissiondetails',err)
+          })
+          })
+          .fail(err=>{
+            console.log('Err fakesubmissions',err)
+          })
         }
-      })
-      .done(res=>{
-        console.log('Res fakesubmissions',res)
-        $.ajax({
-        url:'/crud/',
-        type:'post',
-        data:{
-          tableName:'fakesubmission_details',
-          crudtype:'create',
-          cols:[
-            {key:'submission_id',val:res.insertId},  
-            {key:'vendor_id',val:$('#proposedvendor').val()},
-            {key:'product_id',val:$('#productdetail').val()},
-            {key:'itemname',val:$('#partnumber').val()},
-            {key:'brand',val:$('#brand').val()},
-            {key:'partnumber',val:$('#partnumber').val()},
-            {key:'description',val:$('#description').val()},
-            {key:'amount',val:$('#amount').val()},
-            {key:'discountlevel',val:$('#discountlevel').val()},
-            {key:'proposed_vendor',val:$('#proposedvendor').val()},
-            {key:'proposed_price',val:$('#proposedprice').val()},
-            {key:'proposed_totalprice',val:$('#proposedtotalprice').val()},
-            {key:'vendor',val:$('#vendor').val()},
-            {key:'purchase_reason',val:$('#purchase_reason').val()},
-            {key:'placement_location',val:$('#placement_location').val()},
-            {key:'guarantee',val:$('#guarantee').val()},
-            {key:'note',val:$('#note').val()}
-          ]
-        }
-      })
-      .done(res=>{
-        console.log('Res fakesubmissiondetails',res)
-      })
-      .fail(err=>{
-        console.log('Err fakesubmissiondetails',err)
-      })
-      })
-      .fail(err=>{
-        console.log('Err fakesubmissions',err)
-      })
+      )
+
     })
     $('#btnVerify').on('click',function(){})
     $('#btnReject').on('click',function(){})
   });
+</script>
+<script>
+  createBudgetingNumber = obj => {
+    return "2024"+"07"+'/BUD/'+lpad({num:obj.maxnum+1});
+  }
+  getCountInYear({tableName:'fakesubmissions'},cntInYear=>{
+    getMaxNum({tableName:'fakesubmissions'},maxNumInYear=>{
+      if(cntInYear>0){
+        console.log(createBudgetingNumber({maxnum:maxNumInYear}))
+      }else{
+        console.log(createBudgetingNumber({maxnum:1}))
+      }
+    })
+  })
+  getBudgetNumber = callback => {
+    getCountInYear({tableName:'fakesubmissions'},cntInYear=>{
+      getMaxNum({tableName:'fakesubmissions'},maxNumInYear=>{
+        if(cntInYear>0){
+          callback(createBudgetingNumber({maxnum:maxNumInYear}))
+        }else{
+          callback(createBudgetingNumber({maxnum:1}))
+        }
+      })
+    })
+  }
+</script>
+<script>
+  getTotal = obj => {
+    console.log('pice',$('#proposedprice').val()*$('#amount').val())
+    $('#proposedtotalprice').val(obj.proposed*obj.amount+obj.proposed*obj.amount*obj.discountLevel)
+  }
+  doGetTotal = _ => {
+    getTotal({
+      proposed:$('#proposedprice').val(),
+      amount:$('#amount').val(),
+      discountLevel:$('#discountlevel').val()
+    })
+  }
+  $('.total').on('change',function(){
+    doGetTotal()
+  })
+  $('.total').on('keyup',function(){
+    doGetTotal()
+  })
+  $('.total').on('click',function(){
+    $(this).select()
+  })
+  $('input').on('click',function(){
+    $(this).select()
+  })
+</script>
+<script>
+  $('#tObj').on('click','.btnDuplicate',function(){
+    tr = $(this).stairUp({level:4})
+    console.log('Category',tr.attr('pcategory'))
+    console.log('Product ID',tr.attr('product_id'))
+    $('#staffname').val(tr.find('.staff').text())
+    $('#itemname').val(tr.attr('pcategory')).trigger('change')
+    $('#productdetail').val(tr.attr('product_id')).trigger('change')
+    $('#peruntukan').val()
+    $('#add-submission').modal({
+      backdrop:'static'
+    })
+  })
 </script>
 </body>
 </html>

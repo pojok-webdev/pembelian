@@ -4,7 +4,7 @@ gets = (obj) => {
     sql+= 'date_format(implementation_target,"%d-%m-%Y")implementation_target, '
     sql+= 'date_format(purchase_target,"%d-%m-%Y")purchase_target, '
     sql+= 'price,proposed_price, placement_location,proposed_totalprice,amount,'
-    sql+= 'subject,staff_name,product_id,'
+    sql+= 'subject,staff_name,product_id,c.pcategory,'
     sql+= 'case b.status '
     sql+= 'when "1" then "Pending" '
     sql+= 'when "2" then "Approved Only" '
@@ -22,8 +22,8 @@ gets = (obj) => {
     sql+= 'itemname, '
     sql+= 'a.createuser from submissions a '
     sql+= 'left outer join submission_details b on b.submission_id=a.id '
-    sql+= 'left outer join products c on c.id=b.product_id '
-    sql+= 'left outer join categories d on d.id=c.category_id '
+    sql+= 'left outer join productspanji c on c.id=b.product_id '
+    sql+= 'left outer join categoriespanji d on d.pcategory=c.pcategory '
     sql+= 'order by b.createdate desc '
     return sql
 }
