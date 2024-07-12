@@ -273,7 +273,7 @@
           var query = {
             search:params.hasOwnProperty('term')?params.term:'',type:'public',
             //model:'productparents',
-            model:'categoriespanji'
+            model:'productparentspanji'
           }
           console.log('itemname',query)
           return query
@@ -553,9 +553,11 @@
     tr = $(this).stairUp({level:4})
     console.log('Category',tr.attr('pcategory'))
     console.log('Product ID',tr.attr('product_id'))
+    console.log('Subject',tr.attr('subject'))
     $('#staffname').val(tr.find('.staff').text())
     $('#itemname').val(tr.attr('pcategory')).trigger('change')
     $('#productdetail').val(tr.attr('product_id')).trigger('change')
+    $('#subject').val(tr.attr('subject'))
     $('#peruntukan').val()
     $('#add-submission').modal({
       backdrop:'static'

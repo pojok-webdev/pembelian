@@ -1,4 +1,5 @@
 const axios = require('axios');
+const appSetting = require('../js/appSetting');
 gets = callback => {
     let config = {
         method: 'get',
@@ -7,7 +8,7 @@ gets = callback => {
             +'query={id,display_name,categ_id{id,name},description,type}'
             +'&filter=[["type","=","product"]]',
         headers: { 
-            'Cookie': 'session_id=eee74bf9ea8768879bfe9c0bc835399af09b9275'
+            'Cookie': 'session_id='+appSetting.odoo_session_id
         }
     };
     axios.request(config)

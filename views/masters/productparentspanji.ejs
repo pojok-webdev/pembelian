@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../commons/head') -%>
+  <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.css">
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <%- include('../commons/leftnavbar') -%>
+    
+    <!-- Right navbar links -->
+    <%- include('../commons/rightnavbar') -%>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="../../index3.html" class="brand-link">
+      <img src="/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light"><%= title %></span>
+    </a>
+
+    <!-- Sidebar -->
+    <%- include('../commons/sidebarmenu') -%>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><%= title %></h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active"><%= title %></li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"></h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="tObj" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th width="10%">PCategory</th>
+                    <th width="80%">Category Path</th>
+                    <th width="10%">Aksi</th>
+                  </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <%-include('../commons/footer')%>
+  <%-include('addProductDetail')%>
+  <script>tpe = '<%- type -%>'</script>
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="/assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="/assets/plugins/select2/js/select2.full.min.js"></script>
+<script src="/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/assets/plugins/jszip/jszip.min.js"></script>
+<script src="/assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/assets/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/assets/dist/js/demo.js"></script>
+<script src="/assets/app/common.js"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $('#mainmenu').click()
+    tbl = $('#tObj').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+      ajax:{
+        url:"/master/productparentspanji/data",
+        type:'get',
+      },
+      dom:"Bfrtip",
+      buttons:[
+      {
+        text: '<i class="fa-solid fa-ticket"></i> Penambahan Product Detail',
+        className:'btn btn-success addticket',
+        action: function ( e, tObj, node, config ) {
+          $('#btnSaveProductDetail').show()
+          $('#btnUpdateProductDetail').hide()
+          $('#add-category').modal({
+            backdrop:'static'
+          })
+          }
+        },
+        "excel"
+      ],
+      columnDefs:[
+      {
+          "targets": 2,
+          "data": null,
+          "defaultContent":'<div class="btn-group">'
+            +'<button type="button" class="btn btn-default">Aksi</button>'
+            +'<button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">'
+              +'<span class="sr-only">Toggle Dropdown</span></button>'
+              +'<div class="dropdown-menu dropdown-menu-right" role="menu">'
+                +'<a class="dropdown-item btnEditProduct" style="cursor:pointer;">Edit</a>'
+                +'<div class="dropdown-divider" style="display:none;"></div>'
+                +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;display:none;">Hapus</a>'
+              +'</div>'
+              +'</div>'
+      },
+      {
+        "targets":1,
+        className:"product_id",visible:true
+      },
+      {
+        "targets":0,
+        className:"id"
+      },
+      ],
+      rowCallback: function (row, data) {
+        console.log('datatables row data start',data[9])
+        $(row).attr('product_id',data[0])
+      }
+    })
+    ;
+    $('#product').select2({
+      ajax:{
+        url:'/select2datafactory3',
+        type:'post',
+        data:function(params){
+          var query = {
+            search:params.hasOwnProperty('term')?params.term:'',type:'public',
+            model:'productparents'
+          }
+          console.log('product',query)
+          return query
+        },
+        dataType:'json',
+        processResults:function(data){
+          console.log('product reult',data)
+          return data
+        }
+      }
+    })
+    $('#tObj').on('click','.btnEditProduct',function(){
+      $('#tObj tbody tr').removeClass('selected')
+      tr = $(this).stairUp({level:4})
+      tr.addClass('selected')
+      id = tr.find('.id').text()
+      console.log('add product detail')
+      $('#btnSaveProductDetail').hide()
+      $('#btnUpdateProductDetail').show()
+      $('#partnumber').val(tr.find('.partnumber').text())
+      $('#description').val(tr.find('.description').text())
+      $('#brand').val(tr.find('.brand').text())
+      $('#product').val(tr.attr('product_id')).change()
+      $('#add-category').modal()
+    })
+    $('#btnUpdateProductDetail').on('click',function(){
+      console.log('btnUpdateProduct invoked')
+      $.ajax({
+        url:'/crud',
+        type:'post',
+        data:{
+          tableName:'productdetails',
+          crudtype:'update',
+          cols:[
+            {key:'partnumber',val:$('#partnumber').val()},
+            {key:'product_id',val:$('#product').select2('data')[0].id,},
+            {key:'description',val:$('#description').val()},
+            {key:'brand',val:$('#brand').val()},
+          ],
+          conditions:[
+            {key:"id",val:$('#tObj tbody tr.selected').find('.id').text()}
+          ]
+        }
+      })
+      .done(res=>{
+        console.log('Sukses udpate produk detail',res)
+        tbl.ajax().reload()
+      })
+      .fail(err=>{
+        console.log('ERr',err)
+      })
+    })
+
+  });
+</script>
+</body>
+</html>

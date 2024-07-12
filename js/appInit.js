@@ -19,6 +19,7 @@ pauth = require('./../models/pauth'),
 odooproductcategories = require('./../models/odooproductcategories'),
 odooproducts = require('./../models/odooproducts'),
 oribudgeting = require('./../models/oribudgeting'),
+odoowithnosites = require('./../models/odoowithnosites'),
 cookieParser = require('cookie-parser'),
 listRoute = require('./listRoute'),
 libText = require('./../libraries/text'),
@@ -57,5 +58,6 @@ module.exports = {
     summary:summary,
     odoorouter:odoorouter,oribudgeting:oribudgeting,
     odooproducts:odooproducts,odooproductcategories:odooproductcategories,
+    odoowithnosites:odoowithnosites,
     crud:crud
 }

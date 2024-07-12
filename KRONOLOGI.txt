@@ -1,3 +1,6 @@
-2024-07-08
-using panji master
-relogin to prev url
+
+[{text:'using panji master'},{createdate:'2024-07-08'}]
+[{text:'relogin to prev url'},{createdate:'2024-07-08'}]
+[{text:'remove submit menu from sidebar'},{createdate:'2024-07-08'}]
+[{text:'show log'},{createdate:'2024-07-08'}]
+[{text:'create budget number'},createdate:'2024-07-10']

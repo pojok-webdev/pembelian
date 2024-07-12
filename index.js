@@ -343,6 +343,12 @@ i.app.get('/dobackupremove/:type/:id',(req,res)=>{
 i.app.get('/calendar',(req,res)=>{
   res.render('calendar')
 })
+i.app.get('/odoowithnosites',(req,res)=>{
+  i.master.getdata({type:'odoowithnosites',i:i,session_id:req.cookies.session_id},objs=>{
+    //console.log("objs",objs)
+    res.send({"data":objs})
+  }) 
+})
 i.app.listen(i.setting.port,_=>{
     console.log('PadiTech Pembelian start at port ',i.setting.port)
 })

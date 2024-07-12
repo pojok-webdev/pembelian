@@ -1,11 +1,12 @@
 const axios = require('axios');
+const appSetting = require('../js/appSetting');
 gets = callback => {
     let config = {
     method: 'get',
     maxBodyLength: Infinity,
     url: 'https://odoo.padi.net.id/api/product.category?query={id,name,display_name}',
     headers: { 
-        'Cookie': 'session_id=eee74bf9ea8768879bfe9c0bc835399af09b9275'
+        'Cookie': 'session_id='+appSetting.odoo_session_id
     }
     };
 

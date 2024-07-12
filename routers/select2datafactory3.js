@@ -116,9 +116,9 @@ getData = (obj,callback) => {
               })
             })
         break
-        case 'categoriespanji':
+        case 'productparentspanji':
             obj.i.con.doQuery(obj.i.crud.gets({
-                tableName:'categoriespanji',
+                tableName:'productparentspanji',
                 cols:["pcategory","categorypath"],
                 orderby:[{key:"id",order:"desc"}],
                 conditions:[{key:"1",val:"1"}]
@@ -135,12 +135,12 @@ getData = (obj,callback) => {
         case 'productspanji':
             obj.i.con.doQuery(obj.i.crud.gets({
                 tableName:'productspanji',
-                cols:["sku","nama"],
+                cols:["id","nama"],
                 orderby:[{key:"id",order:"desc"}],
                 conditions:[{key:"pcategory",val:obj.params.category_id}]
             }),result=>{
                 callback({results:result.map(ob=>{
-                    return {id:ob.sku,text:ob.nama}
+                    return {id:ob.id,text:ob.nama}
                 })
                 .filter(f=>{
                     return f.text.toLowerCase().includes(obj.params.search.toLowerCase())
