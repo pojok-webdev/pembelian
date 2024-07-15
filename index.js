@@ -210,6 +210,12 @@ i.app.get('/viewlogs/:mode',(req,res)=>{
           })})
       })
     break
+    case "catatandeveloper":
+      res.render("catatandeveloper",{
+        pagename:"Catatan Developer",
+        title:"Catatan Developer",email:req.cookies.email
+      })
+    break
   }
 
 })

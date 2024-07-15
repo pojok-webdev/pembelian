@@ -53,7 +53,41 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title"></h3>
+                <h3 class="card-title">
+                  <label for="">Pencarian</label>
+                  <input type="text" placeholder="berdasarkan Staff" id="fuser">
+                  <input type="text" placeholder="berdasarkan Itemname" id="fitemname">
+                  <select name="" id="fkategori">
+                    <option value="Semua">Semua</option>
+                    <option value="Teknis (BTS)">Teknis (BTS)</option>
+                    <option value="Teknis (Office)">Teknis (Office)</option>
+                    <option value="Dijual">Dijual</option>
+                    <option value="Gudang">Gudang</option>
+                    <option value="Material">Material</option>
+                    <option value="Teknis NOC Router">Teknis NOC Router</option>
+                    <option value="Non-teknis">Non-teknis</option>
+                    <option value="Marketing Tools, ATK, Merchandise">Marketing Tools, ATK, Merchandise</option>
+                  </select>
+                  <select name="" id="fcabang">
+                    <option value="Semua">Semua</option>
+                    <option value="Surabaya">Surabaya</option>
+                    <option value="Jakarta">Jakarta</option>
+                    <option value="Malang">Malang</option>
+                    <option value="Bali">Bali</option>
+                  </select>
+                  <select name="" id="fstatus">
+                    <option value="Semua">Semua</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Verified">Verified</option>
+                    <option value="Deal Price">Deal Price</option>
+                    <option value="Pre Approval">Pre Approval</option>
+                    <option value="Approved Only">Approved Only</option>
+                    <option value="Approved Bought and Paid">Approved Bought and Paid</option>
+                    <option value="Approved Bought Termin">Approved Bought Termin</option>
+                    <option value="Received">Received</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -138,11 +172,11 @@
     $('#mainmenu').click()
     tbl = $('#tObj').DataTable({
       "paging": true,
-      "lengthChange": false,
-      "searching": false,
+      "lengthChange": true,
+      "searching": true,
       "ordering": true,
       "info": true,
-      "autoWidth": false,
+      "autoWidth": true,
       "responsive": true,
       ajax:{
         url:"/summary/data/42000",
@@ -240,7 +274,7 @@
         $(row).attr('staff_name',data[13])
         $(row).attr('submission_id',data[14])
         $(row).attr('submission_detail_id',data[15])
-      }
+      },
     })
     $('#peruntukan').select2({
       ajax:{
@@ -504,7 +538,42 @@
     $('#btnReject').on('click',function(){})
   });
 </script>
-
+<script>
+  $('#fuser').on('keyup',function(){
+    mykey = $('#fuser').val()
+    tbl.columns(2).search(mykey).draw()
+  })
+  $('#fitemname').on('keyup',function(){
+    mykey = $('#fitemname').val()
+    tbl.columns(3).search(mykey).draw()
+  })
+  $('#fcabang').on('change',function(){
+    mykey = $('#fcabang').val()
+    tbl.columns(7).search(mykey).draw()
+    if(mykey==="Semua"){
+      tbl.columns(7).search(['Surabaya','Jakarta','Malang','Bali'].join('|'),true).draw()
+    }else{
+      tbl.columns(7).search(mykey).draw()
+    }
+  })
+  $('#fstatus').on('change',function(){
+    mykey = $('#fstatus').val()
+    if(mykey==="Semua"){
+      tbl.columns(8).search(['Verified','Pending','Deal Price','Pre Approval','Approved Only'].join('|'),true).draw()
+    }else{
+      tbl.columns(8).search(mykey).draw()
+    }
+  })
+  $('#fkategori').on('change',function(){
+    mykey = $('#fkategori').val()
+    if(mykey==="Semua"){
+      tbl.columns(4).search(['Teknis (BTS)','Teknis (Office)','Dijual','Gudang','Teknis NOC Router','Material','Non-Teknis','Merchandise'].join('|'),true).draw()
+    }else{
+      tbl.columns(4).search(mykey).draw()
+    }
+    
+  })
+  </script>
 
 </body>
 </html>
