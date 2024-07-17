@@ -32,29 +32,36 @@ i.app.post('/loginhandler',(req,res)=>{
   console.log("params got",params)
   i.pauth.login(params,result=>{
     console.log('LoginHandler',result)
+    
     if(result.message==="ok"){
-      res.cookie('email',result.email)
-      res.cookie('username',result.username)
-      res.cookie('level', result.level)
-      res.cookie('role', result.role)
-      res.cookie('roleclass', result.roleclass)
-      res.cookie('division_id', result.division_id)
-      res.cookie('defaultRoute', result.defaultRoute)
-      if(params.hasOwnProperty('curpath')){
-        switch(params.curpath){
-          case 'login':
-            res.redirect('/summary/view/42000')
-          break
-          case 'logout':
-            res.redirect('/summary/view/42000')
-          break
-          default:
-            res.redirect(params.curpath)
-          break
+      i.users.getroles({user_id:result.id},roles=>{
+        res.cookie('roles',roles.map(role=>{
+          return role.role_id
+        }))
+        res.cookie('email',result.email)
+        res.cookie('username',result.username)
+        res.cookie('level', result.level)
+        res.cookie('role', result.role)
+        res.cookie('roleclass', result.roleclass)
+        res.cookie('division_id', result.division_id)
+        res.cookie('defaultRoute', result.defaultRoute)
+        if(params.hasOwnProperty('curpath')){
+          switch(params.curpath){
+            case '/login':
+              res.redirect('/summary/view/42000')
+            break
+            case '/logout':
+              res.redirect('/summary/view/42000')
+            break
+            default:
+              console.log('curpath',params.curpath)
+              res.redirect(params.curpath)
+            break
+          }
+        }else{
+          res.redirect('/summary/view/42000')
         }
-      }else{
-        res.redirect('/summary/view/42000')
-      }
+      })
     }else{
       res.send({"comment":"Password tidak cocok"})
     }
@@ -232,9 +239,10 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
       })
     break
     case 'view':
+      console.log('roles',req.cookies.roles)
       res.render('summary',{
         title:'Summary',pagename:'Summary',email:req.cookies.email,username:req.cookies.username,
-        type:params.mode
+        type:params.mode,roles:req.cookies.roles
       })
       break
     case 'data':
@@ -274,7 +282,9 @@ i.app.get('/submissiondetail/:submission_id/:submission_detail_id',(req,res)=>{
     i.con.doQuery(i.oribudgeting.getSubmissionDetailVendor({submission_detail_id:params.submission_detail_id}),vendors=>{
       console.log('Vendors',vendors)
       res.render('submissions/detail',{
-        title:'Submissiondetail',pagename:'Submissiondetail',email:'',itemname:'WRT54GL',
+        title:'Submissiondetail',pagename:'Submissiondetail',
+        email:req.cookies.email,
+        username:req.cookies.username,
         result:result[0],vendors:vendors,
         submission_id:params.submission_id,
         submission_detail_id:params.submission_detail_id
@@ -331,8 +341,11 @@ i.app.get('/dobackupremove/:type/:id',(req,res)=>{
     case 'submission_details':
       i.con.doQuery(i.summary.storeSubmissionDetail({id:params.id}),stored=>{
         console.log('submission detail id',stored,'stored')
-        i.con.doQuery(i.summary.removeSubmissionDetail({id:params.id}),removed=>{
-          console.log('submission detail id',removed,'removed')
+        i.con.doQuery(i.summary.getbysubmissiondetailid({id:params.id}),submission_id=>{
+          i.con.doQuery(i.summary.removeSubmissionDetail({id:params.id}),removed=>{
+            console.log('submission detail id',removed,'removed')
+            res.send({id:submission_id})
+          })
         })
       })
     break

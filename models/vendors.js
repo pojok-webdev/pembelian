@@ -8,6 +8,15 @@ getsbytype = (obj,callback) => {
         callback(result)
     })
 }
+getbysubmissiondetail = (obj,callback) => {
+    sql = 'select * from fakesubmissiondetails_vendors a '
+    sql+= 'left outer join vendors b on b.id=a.vendor_id '
+    sql+= 'where submission_detail_id='+obj.submission_detail_id+' '
+    doQuery(sql,result=>{
+        callback(result)
+    })
+}
 module.exports = {
-    getsbytype:getsbytype
+    getsbytype:getsbytype,
+    getbysubmissiondetail:getbysubmissiondetail
 }

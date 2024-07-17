@@ -358,6 +358,7 @@
 </div>
 <!-- ./wrapper -->
 <%- include('./addVendorComparation') -%>
+<script>username="<%- username -%>"</script>
 <!-- jQuery -->
 <script src="/assets/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -410,30 +411,54 @@
         }
       }
     })
-    $('#btnSaveVendorComparation').on('click',function(){
-      $.ajax({
-        url:'/crud',
-        type:'post',
-        data:{
-          tableName:'fakesubmissiondetails_vendors',
-          crudtype:'create',
-          cols:[
-            {key:'submission_detail_id',val:submission_detail_id},
-            {key:'vendor_id',val:$('#vendor').val()},
-            {key:'price',val:$('#dpp').val()},
-            {key:'ppn',val:$('#ppn').val()},
-            {key:'ongkir',val:$('#ongkir').val()},
-            {key:'createuser',val:'puji'}
-          ]
-        }
-      })
-      .done(res=>{
-        console.log('Res',res)
-      })
-      .fail(err=>{
-        console.log('Error save vendor comparation',err)
-      })
+  saveVendorComparation = _=>{
+    $.ajax({
+      url:'/crud',
+      type:'post',
+      data:{
+        tableName:'fakesubmissiondetails_vendors',
+        crudtype:'create',
+        cols:[
+          {key:'submission_detail_id',val:submission_detail_id},
+          {key:'vendor_id',val:$('#vendor').val()},
+          {key:'price',val:$('#dpp').val()},
+          {key:'ppn',val:$('#ppn').val()},
+          {key:'ongkir',val:$('#ongkir').val()},
+          {key:'createuser',val:username}
+        ]
+      }
     })
+    .done(res=>{
+      console.log('Res',res)
+    })
+    .fail(err=>{
+      console.log('Error save vendor comparation',err)
+    })
+  }
+  $('#btnSaveVendorComparation').on('click',function(){
+    console.log("vendor",$('#vendor').val())
+    if(!$('#vendor').val()){
+      alert("Vendor harus diisi")
+    }else{
+      saveVendorComparation()
+    }
+  })
+</script>
+<script>
+  $('.changetotal').on('keyup',function(){
+    console.log('Amount',$('#amount').val())
+    $('#ppn').val(0.11*$('#dpp').val())
+    ppn = $('#ppn').val()
+    total = (1*$('#dpp').val()+1*ppn+1*$('#ongkir').val())*$('#amount').val()
+    $('#total').val(total)
+  })
+  $('.changetotal').on('change',function(){
+    console.log('Amount',$('#amount').val())
+    $('#ppn').val(0.11*$('#dpp').val())
+    ppn = $('#ppn').val()
+    total = (1*$('#dpp').val()+1*ppn+1*$('#ongkir').val())*$('#amount').val()
+    $('#total').html(total)
+  })
 </script>
 </body>
 </html>

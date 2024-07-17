@@ -32,6 +32,16 @@ getprivilege = (obj,callback) => {
         callback(result)
     })
 }
+getroles = (obj,callback) => {
+    sql = 'select a.*,b.username,c.name  ';
+    sql+= 'from roles_users a  ';
+    sql+= 'left outer join users b on b.id=a.user_id  ';
+    sql+= 'left outer join roles c on c.id=a.role_id '
+    sql+= 'where user_id='+obj.user_id+' '
+    console.log('roles',sql)
+    doQuery(sql,result=>{
+        callback(result)
+    })}
 module.exports = {
-    gets:gets,getprivileges:getprivileges,getprivilege:getprivilege
+    gets:gets,getprivileges:getprivileges,getprivilege:getprivilege,getroles:getroles
 }

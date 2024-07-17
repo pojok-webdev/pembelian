@@ -182,7 +182,7 @@
         url:"/summary/data/42000",
         type:'get',
       },
-      dom:"Bfrtip",
+      dom:"Brtip",
       order:[1,'desc'],
       buttons:[
       {
@@ -218,8 +218,8 @@
                 +'<a class="dropdown-item btnSubmissionDetail" style="cursor:pointer;">Detail</a>'
                 +'<a class="dropdown-item btnSubmissionVerification" style="cursor:pointer;">Verification</a>'
                 +'<a class="dropdown-item btnFinalPrice" style="cursor:pointer;">Final Price</a>'
-                +'<div class="dropdown-divider" style="display:none;"></div>'
-                +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;display:none;">Hapus</a>'
+                +'<div class="dropdown-divider" style="display:block;"></div>'
+                +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;">Hapus</a>'
               +'</div>'
               +'</div>'
       },
@@ -543,9 +543,15 @@
     mykey = $('#fuser').val()
     tbl.columns(2).search(mykey).draw()
   })
+  $('#fuser').on('click',function(){
+    $(this).select()
+  })
   $('#fitemname').on('keyup',function(){
     mykey = $('#fitemname').val()
     tbl.columns(3).search(mykey).draw()
+  })
+  $('#fitemname').on('click',function(){
+    $(this).select()
   })
   $('#fcabang').on('change',function(){
     mykey = $('#fcabang').val()
@@ -559,7 +565,9 @@
   $('#fstatus').on('change',function(){
     mykey = $('#fstatus').val()
     if(mykey==="Semua"){
-      tbl.columns(8).search(['Verified','Pending','Deal Price','Pre Approval','Approved Only'].join('|'),true).draw()
+      tbl.columns(8)
+      .search(['Verified','Pending','Deal','Pre','Only'].join('|'),true)
+      .draw()
     }else{
       tbl.columns(8).search(mykey).draw()
     }
@@ -567,13 +575,31 @@
   $('#fkategori').on('change',function(){
     mykey = $('#fkategori').val()
     if(mykey==="Semua"){
-      tbl.columns(4).search(['Teknis (BTS)','Teknis (Office)','Dijual','Gudang','Teknis NOC Router','Material','Non-Teknis','Merchandise'].join('|'),true).draw()
+      tbl.columns(4)
+      .search(['BTS','Office','Dijual','Gudang','NOC','Material','Non-Teknis','Merchandise'].join('|'),true).draw()
     }else{
       tbl.columns(4).search(mykey).draw()
     }
     
   })
   </script>
-
+  <script>
+    $('#tObj').on('click','.btnRemoveProduct',function(){
+      tr = $(this).stairUp({level:4})
+      submission_id = tr.attr('submission_id')
+      submission_detail_id = tr.attr('submission_detail_id')
+      $('#tObj tbody tr').removeClass('selected')
+      tr.addClass('selected')
+      $.ajax({
+          url:'/dobackupremove/submissions/'+submission_id
+        })
+        .done(res=>{
+          console.log('Res',res)
+        })
+        .fail(err=>{
+          console.log('Err',err)
+        })
+    })
+  </script>
 </body>
 </html>

@@ -34,6 +34,11 @@ gets = (obj) => {
     sql+= 'order by b.createdate desc '
     return sql
 }
+getbysubmissiondetailid = (obj) => {
+    sql = 'select b.id,b.budgeting_number from submission_details a left outer join submissions b onn b.id=a.submission_detail_id '
+    sql+= 'where a.id='+obj.id+' '
+    return sql
+}
 storeSubmissionDetail = obj => {
     sql = 'insert into deletedsubmission_details select * from submission_details where id= '+obj.id+' '
     return sql
@@ -53,5 +58,6 @@ removeSubmission = (obj) => {
 module.exports = {
     gets:gets,
     storeSubmissionDetail:storeSubmissionDetail,removeSubmissionDetail:removeSubmissionDetail,
-    storeSubmission:storeSubmission,removeSubmission:removeSubmission
+    storeSubmission:storeSubmission,removeSubmission:removeSubmission,
+    getbysubmissiondetailid:getbysubmissiondetailid
 }
