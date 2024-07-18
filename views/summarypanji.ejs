@@ -53,7 +53,41 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title"></h3>
+                <h3 class="card-title">
+                  <label for="">Pencarian</label>
+                  <input type="text" placeholder="berdasarkan Staff" id="fuser">
+                  <input type="text" placeholder="berdasarkan Itemname" id="fitemname">
+                  <select name="" id="fkategori">
+                    <option value="Semua">Semua</option>
+                    <option value="Teknis (BTS)">Teknis (BTS)</option>
+                    <option value="Teknis (Office)">Teknis (Office)</option>
+                    <option value="Dijual">Dijual</option>
+                    <option value="Gudang">Gudang</option>
+                    <option value="Material">Material</option>
+                    <option value="Teknis NOC Router">Teknis NOC Router</option>
+                    <option value="Non-teknis">Non-teknis</option>
+                    <option value="Marketing Tools, ATK, Merchandise">Marketing Tools, ATK, Merchandise</option>
+                  </select>
+                  <select name="" id="fcabang">
+                    <option value="Semua">Semua</option>
+                    <option value="Surabaya">Surabaya</option>
+                    <option value="Jakarta">Jakarta</option>
+                    <option value="Malang">Malang</option>
+                    <option value="Bali">Bali</option>
+                  </select>
+                  <select name="" id="fstatus">
+                    <option value="Semua">Semua</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Verified">Verified</option>
+                    <option value="Deal Price">Deal Price</option>
+                    <option value="Pre Approval">Pre Approval</option>
+                    <option value="Approved Only">Approved Only</option>
+                    <option value="Approved Bought and Paid">Approved Bought and Paid</option>
+                    <option value="Approved Bought Termin">Approved Bought Termin</option>
+                    <option value="Received">Received</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -140,7 +174,7 @@
     tbl = $('#tObj').DataTable({
       "paging": true,
       "lengthChange": false,
-      "searching": false,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": false,
@@ -244,6 +278,7 @@
         $(row).attr('submission_id',data[14])
         $(row).attr('submission_detail_id',data[15])
         $(row).attr('pcategory',data[16])
+        $(row).attr('purchase_reason',data[18])
       }
     })
     $('#peruntukan').select2({
@@ -348,7 +383,18 @@
       tr = $(this).stairUp({level:4})
       $('#tObj tbody tr').removeClass('selected')
       tr.addClass('selected')
-      window.location.href = '/submissiondetail/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+      console.log('Status',tr.find('.status').text())
+      switch(tr.find('.status').text()){
+        case 'Verified':
+          window.location.href = '/submissiondetail/verified/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+        break
+        case 'Received':
+          window.location.href = '/submissiondetail/received/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+        break
+        case 'Approved Bought and Paid':
+          window.location.href = '/submissiondetail/bought/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+        break
+      }
     })
     $('#tObj').on('click','.btnSubmissionVerification',function(){
       tr = $(this).stairUp({level:4})
@@ -564,5 +610,51 @@
     })
   })
 </script>
+<script>
+  $('#fuser').on('keyup',function(){
+    mykey = $('#fuser').val()
+    console.log('fuser')
+    tbl.columns(2).search(mykey).draw()
+  })
+  $('#fuser').on('click',function(){
+    $(this).select()
+  })
+  $('#fitemname').on('keyup',function(){
+    mykey = $('#fitemname').val()
+    tbl.columns(3).search(mykey).draw()
+  })
+  $('#fitemname').on('click',function(){
+    $(this).select()
+  })
+  $('#fcabang').on('change',function(){
+    mykey = $('#fcabang').val()
+    tbl.columns(7).search(mykey).draw()
+    if(mykey==="Semua"){
+      tbl.columns(7).search(['Surabaya','Jakarta','Malang','Bali'].join('|'),true).draw()
+    }else{
+      tbl.columns(7).search(mykey).draw()
+    }
+  })
+  $('#fstatus').on('change',function(){
+    mykey = $('#fstatus').val()
+    if(mykey==="Semua"){
+      tbl.columns(8)
+      .search(['Verified','Pending','Deal','Pre','Only'].join('|'),true)
+      .draw()
+    }else{
+      tbl.columns(8).search(mykey).draw()
+    }
+  })
+  $('#fkategori').on('change',function(){
+    mykey = $('#fkategori').val()
+    if(mykey==="Semua"){
+      tbl.columns(4)
+      .search(['BTS','Office','Dijual','Gudang','NOC','Material','Non-Teknis','Merchandise'].join('|'),true).draw()
+    }else{
+      tbl.columns(4).search(mykey).draw()
+    }
+    
+  })
+  </script>
 </body>
 </html>

@@ -274,6 +274,7 @@
         $(row).attr('staff_name',data[13])
         $(row).attr('submission_id',data[14])
         $(row).attr('submission_detail_id',data[15])
+        $(row).attr('purchase_reason',data[18])
       },
     })
     $('#peruntukan').select2({
@@ -393,12 +394,29 @@
       tr = $(this).stairUp({level:4})
       $('#tObj tbody tr').removeClass('selected')
       tr.addClass('selected')
-      window.location.href = '/submissiondetail/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+      console.log('Status',tr.find('.status').text())
+      switch(tr.find('.status').text()){
+        case 'Verified':
+          window.location.href = '/submissiondetail/verified/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+        break
+        case 'Received':
+          window.location.href = '/submissiondetail/received/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+        break
+        case 'Approved Bought and Paid':
+          window.location.href = '/submissiondetail/bought/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+        break
+      }
     })
     $('#tObj').on('click','.btnSubmissionVerification',function(){
       tr = $(this).stairUp({level:4})
       $('#tObj tbody tr').removeClass('selected')
       tr.addClass('selected')
+      $('#vstaffname').html(tr.find('.staff').text())
+      $('#vsubmissiondate').html(tr.find('.submission_date').text())
+      $('#totalprice').html(tr.find('.proposed_totalprice').text())
+      $('#vitemname').html(tr.find('.itemname').text())
+      $('#implementationtarget').html(tr.attr('implementation_target'))
+      $('#purchasereason').html(tr.attr('purchase_reason'))
       $('#add-verification').modal()
     })
     $('#tObj').on('click','.btnFinalPrice',function(){
