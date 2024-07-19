@@ -28,6 +28,21 @@
   <link rel="stylesheet" href="/assets/plugins/dropzone/min/dropzone.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/assets/dist/css/adminlte.min.css">
+  <style>
+    .comparation{
+      width: 100%;
+    }
+    .gold{
+      background-color: gold;
+    }
+    .header{
+      text-align: center;
+      font-weight: bolder;
+    }
+    .center{
+      text-align: center;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -201,7 +216,7 @@
               <div class="col-md-6">
                 <!-- /.form-group -->
                 <div class="form-group row">
-                  <label class="col-sm-12 col-form-label">PRODUCT DETAIL</label>
+                  <label class="col-sm-12 col-form-label center">PRODUCT DETAIL</label>
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-4 col-form-label">Name</label>
@@ -234,12 +249,6 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Proposed Vendor</label>
-                    <div class="col-sm-8">
-                      <label for=""><%- result.proposed_vendor -%></label>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Proposed Price</label>
                     <div class="col-sm-8">
                       <label for=""><%- result.proposed_totalprice -%></label>
@@ -262,7 +271,60 @@
               <!-- /.col -->
               <div class="col-md-6">
                 <div class="form-group row">
-                  <label class="col-sm-12 col-form-label">REALIZATION</label>
+                  <label class="col-sm-12 col-form-label center">REALIZATION</label>
+                </div>
+                <div class="form-group row">
+                  <table id="comparation" width="100%">
+                    <tbody>
+                      <tr>
+                        <td class="gold header">Proposed</td>
+                        <td class="gold"></td>
+                        <td class="gold header">Realization</td>
+                      </tr>
+                      <tr>
+                        <td><%- result.proposed_vendor -%></td>
+                        <td class="gold center">Vendor</td>
+                        <td><%- result.vendor -%></td>
+                      </tr>
+                      <tr>
+                        <td>Rp. <%- result.proposed_totalprice -%></td>
+                        <td class="gold center">Price</td>
+                        <td>Rp. <%- result.totalprice -%></td>
+                      </tr>
+                      <tr>
+                        <td>Rp. </td>
+                        <td class="gold center">Tax</td>
+                        <td>Rp. </td>
+                      </tr>
+                      <tr>
+                        <td>Rp. </td>
+                        <td class="gold center">Delivery Cost</td>
+                        <td>Rp. <%- result.ongkir -%></td>
+                      </tr>
+                      <tr>
+                        <td>Rp. </td>
+                        <td class="gold center">Total Price</td>
+                        <td>Rp. <%- result.totalprice -%></td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="form-group row">
+                  <table id="comparation" width="100%">
+                    <tbody>
+                      <tr>
+                        <td class="gold header">Payment Date</td>
+                        <td class="gold">Payment Type</td>
+                        <td class="gold header">Amount</td>
+                        <td>Action</td>
+                      </tr>
+
+
+
+                    </tbody>
+                  </table>
+
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-4 col-form-label">No. Budgeting</label>
@@ -293,18 +355,6 @@
                   <label class="col-sm-4 col-form-label">Arrival date</label>
                   <div class="col-sm-8">
                     <label for=""><%- result.arrivaldate -%></label>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Vendor</label>
-                  <div class="col-sm-8">
-                    <label for="">Rp. <%- result.vendor -%></label>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Total Price</label>
-                  <div class="col-sm-8">
-                    <label for="">Rp. <%- result.totalprice -%></label>
                   </div>
                 </div>
 

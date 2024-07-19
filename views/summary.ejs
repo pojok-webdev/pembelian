@@ -54,9 +54,11 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  <label for="">Pencarian</label>
-                  <input type="text" placeholder="berdasarkan Staff" id="fuser">
-                  <input type="text" placeholder="berdasarkan Itemname" id="fitemname">
+                  <label for="fstaff">Staff</label>
+                  <input type="text" placeholder="berdasarkan Staff" id="fuser" name="fstaff">
+                  <label for="fitemname">Item Name</label>
+                  <input type="text" placeholder="berdasarkan Itemname" id="fitemname" name="fitemname">
+                  <label for="fkategori">Kategori</label>
                   <select name="" id="fkategori">
                     <option value="Semua">Semua</option>
                     <option value="Teknis (BTS)">Teknis (BTS)</option>
@@ -68,14 +70,16 @@
                     <option value="Non-teknis">Non-teknis</option>
                     <option value="Marketing Tools, ATK, Merchandise">Marketing Tools, ATK, Merchandise</option>
                   </select>
-                  <select name="" id="fcabang">
+                  <label for="fcabang">Cabang</label>
+                  <select name="fcabang" id="fcabang">
                     <option value="Semua">Semua</option>
                     <option value="Surabaya">Surabaya</option>
                     <option value="Jakarta">Jakarta</option>
                     <option value="Malang">Malang</option>
                     <option value="Bali">Bali</option>
                   </select>
-                  <select name="" id="fstatus">
+                  <label for="fstatus">Status</label>
+                  <select name="fstatus" id="fstatus">
                     <option value="Semua">Semua</option>
                     <option value="Pending">Pending</option>
                     <option value="Verified">Verified</option>
