@@ -129,3 +129,16 @@ select a.id,a.kdticket,a.client_id,a.location_id,substring(locationtext,1,0)loca
 
 
 select a.id,a.kdticket,a.client_id,a.location_id,substring(locationtext,1,10)locationtext,substring(a.clientname,1,10)clientname,customer_number,a.cause_id, case when requesttype is null then "uncategorized" else trim(upper(requesttype)) end requesttype,c.id causecategory_id, ou from ticketodoo a left outer join ticketcauses b on b.id=a.cause_id left outer join ticketcausecategories c on c.id=b.category_id where a.id>=42000 order by id desc ;
+
+
+
+mysql> select id,username,email,password,salt from users where username like '%felix%';
++----+----------+-------------------+--------------------------------------------------------------------------+----------------------------------+
+| id | username | email             | password                                                                 | salt                             |
++----+----------+-------------------+--------------------------------------------------------------------------+----------------------------------+
+|  6 | felix    | felix@padi.net.id | kxW6faxHKsiHWP3uM9LUcDqU9Fk7Os9Qe05b3612d9cf6e8ce707046ba6afed4319b4964a | kxW6faxHKsiHWP3uM9LUcDqU9Fk7Os9Q |
++----+----------+-------------------+--------------------------------------------------------------------------+----------------------------------+
+1 row in set (0.03 sec)
+roles:
+3, 8, 9, 10
+select * from roles where id in (3, 8, 9, 10);

@@ -170,10 +170,20 @@
 <script src="/assets/app/common.js"></script>
 <script src="/js/libs/dates.js"></script>
 <script>username="<%- username -%>"</script>
+<script>roles="<%- roles -%>"</script>
 <!-- Page specific script -->
 <script>
   $(function () {
     $('#mainmenu').click()
+    console.log('roles',roles)
+    editvisibility = "none"
+    roles = [roles].forEach(role => {
+      console.log('ROle',role)
+    });
+    approval = ([roles].includes(3))?"block":"none"
+    plafoncreator = ([roles].includes(8))?"block":"none"
+    realizationauth = ([roles].includes(9))?"block":"none"
+    submissionviewer = ([roles].includes(10))?"block":"none"
     tbl = $('#tObj').DataTable({
       "paging": true,
       "lengthChange": true,
@@ -218,14 +228,15 @@
             +'<button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">'
               +'<span class="sr-only">Toggle Dropdown</span></button>'
               +'<div class="dropdown-menu dropdown-menu-right" role="menu">'
-                +'<a class="dropdown-item btnEditProduct" style="cursor:pointer;">Edit</a>'
+                +'<a class="dropdown-item btnEditProduct" style="cursor:pointer;display: '+editvisibility+' ;">Edit</a>'
                 +'<a class="dropdown-item btnSubmissionDetail" style="cursor:pointer;">Detail</a>'
                 +'<a class="dropdown-item btnSubmissionVerification" style="cursor:pointer;">Verification</a>'
                 +'<a class="dropdown-item btnFinalPrice" style="cursor:pointer;">Final Price</a>'
+                +'<a class="dropdown-item btnRealizationDetail" style="cursor:pointer;">Realization Detail</a>'
                 +'<div class="dropdown-divider" style="display:block;"></div>'
-                +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;">Hapus</a>'
+                +'<a class="dropdown-item btnRemoveProduct" style="cursor:pointer;color:red;display: '+editvisibility+' ;">Hapus</a>'
               +'</div>'
-              +'</div>'
+            +'</div>'
       },
       {
         "targets":9,
@@ -406,10 +417,20 @@
         case 'Received':
           window.location.href = '/submissiondetail/received/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
         break
+        case 'Approved Only':
+          window.location.href = '/submissiondetail/received/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+        break
         case 'Approved Bought and Paid':
           window.location.href = '/submissiondetail/bought/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
         break
       }
+    })
+    $('#tObj').on('click','.btnRealizationDetail',function(){
+      tr = $(this).stairUp({level:4})
+      $('#tObj tbody tr').removeClass('selected')
+      tr.addClass('selected')
+      console.log('Status',tr.find('.status').text())
+      window.location.href = '/submissiondetail/realizationdetail/'+tr.attr('submission_detail_id')+'/'+tr.attr
     })
     $('#tObj').on('click','.btnSubmissionVerification',function(){
       tr = $(this).stairUp({level:4})
