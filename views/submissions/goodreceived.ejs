@@ -243,7 +243,7 @@
               <div class="col-md-12">
                 <div class="form-group row">
                   <div class="col-sm-12">
-                    <button class="btn btn-primary">Save</button>
+                    <button class="btn btn-primary" id="btnsave">Save</button>
                   </div>
                 </div>
 
@@ -309,6 +309,25 @@
 <!-- Page specific script -->
  <script>submission_detail_id="<%- submission_detail_id -%>"</script>
 <script>
+  $('#btnsave').on('click',function(){
+    $.ajax({
+      url:'/crud',
+      type:'post',
+      dataType:'json',
+      data:{
+        crudtype:'update',
+        tableName:'submission_details',
+        cols:[({key:'arrivaldate',val:$('#receiveddate input').val()})],
+        conditions:[{key:'id',val:submission_detail_id}]
+      }
+    })
+    .done(res=>{
+      console.log('Res save',res)
+    })
+    .fail(err=>{
+      console.log('Err save',err)
+    })
+  })
     $('#receiveddate input').val(getdate())
     $('#receiveddate').datetimepicker({
         format: 'DD/MM/yyyy'
