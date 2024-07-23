@@ -279,7 +279,7 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
 i.app.get('/submissiondetail/:type/:submission_id/:submission_detail_id',(req,res)=>{
   params = req.params
   switch(params.type){
-    case 'verified':
+    case 'detail':
       i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
         console.log('submissiondetails',result)
         i.con.doQuery(i.oribudgeting.getSubmissionDetailVendor({submission_detail_id:params.submission_detail_id}),vendors=>{
@@ -296,9 +296,51 @@ i.app.get('/submissiondetail/:type/:submission_id/:submission_detail_id',(req,re
     
       })
       break
-      case 'received':
-        i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
-        res.render('submissions/info',{
+    case 'verified':
+      i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+        console.log('submissiondetails',result)
+        i.con.doQuery(i.oribudgeting.getSubmissionDetailVendor({submission_detail_id:params.submission_detail_id}),vendors=>{
+          console.log('Vendors',vendors)
+          res.render('submissions/verified',{
+            title:'Submissiondetail',pagename:'Submissiondetail',
+            email:req.cookies.email,
+            username:req.cookies.username,
+            result:result[0],vendors:vendors,
+            submission_id:params.submission_id,
+            submission_detail_id:params.submission_detail_id
+          })
+        })
+    
+      })
+      break
+    case 'info':
+      i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+      res.render('submissions/info',{
+        title:'Submissiondetail',pagename:'Submissiondetail',
+        email:req.cookies.email,
+        username:req.cookies.username,
+        result:result[0],
+        submission_id:params.submission_id,
+        submission_detail_id:params.submission_detail_id
+      })
+    })
+    break
+    case 'bought':
+      i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+      res.render('submissions/bought',{
+        title:'Submissiondetail',pagename:'Submissiondetail',
+        email:req.cookies.email,
+        username:req.cookies.username,
+        result:result[0],
+        submission_id:params.submission_id,
+        submission_detail_id:params.submission_detail_id
+      })
+    })
+    break
+    case 'pending':
+      i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+        console.log('resulte',result)
+        res.render('submissions/pending',{
           title:'Submissiondetail',pagename:'Submissiondetail',
           email:req.cookies.email,
           username:req.cookies.username,
@@ -306,21 +348,60 @@ i.app.get('/submissiondetail/:type/:submission_id/:submission_detail_id',(req,re
           submission_id:params.submission_id,
           submission_detail_id:params.submission_detail_id
         })
-      })
-      break
-      case 'bought':
-        i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
-        res.render('submissions/bought',{
-          title:'Submissiondetail',pagename:'Submissiondetail',
-          email:req.cookies.email,
-          username:req.cookies.username,
-          result:result[0],
-          submission_id:params.submission_id,
-          submission_detail_id:params.submission_detail_id
+      })  
+    break
+    case 'finalprice':
+      i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+        console.log('submissiondetails',result)
+        i.con.doQuery(i.oribudgeting.getSubmissionDetailVendor({submission_detail_id:params.submission_detail_id}),vendors=>{
+          console.log('Vendors',vendors)
+          res.render('submissions/final-price',{
+            title:'Submissiondetail',pagename:'Submissiondetail',
+            email:req.cookies.email,
+            username:req.cookies.username,
+            result:result[0],vendors:vendors,
+            submission_id:params.submission_id,
+            submission_detail_id:params.submission_detail_id
+          })
         })
+    
       })
-      break
-      }
+    break
+    case 'received':
+      i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+        console.log('submissiondetails',result)
+        i.con.doQuery(i.oribudgeting.getSubmissionDetailVendor({submission_detail_id:params.submission_detail_id}),vendors=>{
+          console.log('Vendors',vendors)
+          res.render('submissions/received',{
+            title:'Submissiondetail',pagename:'Submissiondetail',
+            email:req.cookies.email,
+            username:req.cookies.username,
+            result:result[0],vendors:vendors,
+            submission_id:params.submission_id,
+            submission_detail_id:params.submission_detail_id
+          })
+        })
+    
+      })
+    break
+    case 'goodreceived':
+      i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+        console.log('submissiondetails',result)
+        i.con.doQuery(i.oribudgeting.getSubmissionDetailVendor({submission_detail_id:params.submission_detail_id}),vendors=>{
+          console.log('Vendors',vendors)
+          res.render('submissions/goodreceived',{
+            title:'Submissiondetail',pagename:'Submissiondetail',
+            email:req.cookies.email,
+            username:req.cookies.username,
+            result:result[0],vendors:vendors,
+            submission_id:params.submission_id,
+            submission_detail_id:params.submission_detail_id
+          })
+        })
+    
+      })
+    break
+  }
 
 })
 i.app.get('/finalprice/:mode/:submission_id',(req,res)=>{

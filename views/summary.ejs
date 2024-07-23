@@ -423,6 +423,9 @@
         case 'Approved Bought and Paid':
           window.location.href = '/submissiondetail/bought/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
         break
+        case 'Pending':
+          window.location.href = '/submissiondetail/detail/'+tr.attr('submission_detail_id')+'/'+tr.attr('submission_id')
+        break
       }
     })
     $('#tObj').on('click','.btnRealizationDetail',function(){
