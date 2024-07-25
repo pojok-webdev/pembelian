@@ -6,7 +6,8 @@ gets = callback => {
     maxBodyLength: Infinity,
     url: 'https://odoo.padi.net.id/api/product.category?query={id,name,display_name}',
     headers: { 
-        'Cookie': 'session_id='+appSetting.odoo_session_id
+        //'Cookie': 'session_id='+appSetting.odoo_session_id
+        'Cookie':'session_id=f419bf0cc4548c141fe23c8544336017e915461b'
     }
     };
 

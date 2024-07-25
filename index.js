@@ -401,6 +401,23 @@ i.app.get('/submissiondetail/:type/:submission_id/:submission_detail_id',(req,re
     
       })
     break
+    case 'submissionedit':
+      i.con.doQuery(i.oribudgeting.getSubmissionDetails({submission_id:params.submission_id}),result=>{
+        console.log('submissiondetails',result)
+        i.con.doQuery(i.oribudgeting.getSubmissionDetailVendor({submission_detail_id:params.submission_detail_id}),vendors=>{
+          console.log('Vendors',vendors)
+          res.render('submissions/submission-edit',{
+            title:'Submission edit',pagename:'Submission edit',
+            email:req.cookies.email,
+            username:req.cookies.username,
+            result:result[0],vendors:vendors,
+            submission_id:params.submission_id,
+            submission_detail_id:params.submission_detail_id
+          })
+        })
+    
+      })
+    break
   }
 
 })

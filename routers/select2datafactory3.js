@@ -148,7 +148,9 @@ getData = (obj,callback) => {
                 })
             })
         break
+        case 'categories':
 
+        break
     }
 }
 module.exports = {

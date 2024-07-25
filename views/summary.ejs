@@ -318,8 +318,8 @@
         data:function(params){
           var query = {
             search:params.hasOwnProperty('term')?params.term:'',type:'public',
-            //model:'productparents',
-            model:'odooproductparents'
+            model:'productparents',
+            //model:'odooproductparents'
           }
           console.log('itemname',query)
           return query
@@ -359,8 +359,8 @@
           var query = {
             search:params.hasOwnProperty('term')?params.term:'',type:'public',
             category_id:$('#itemname').val(),
-            //model:'productdetails',
-            model:'odooproductdetails'
+            model:'productdetails',
+            //model:'odooproductdetails'
           }
           console.log('productdetails',query)
           return query
@@ -524,7 +524,7 @@
         url:'/crud/',
         type:'post',
         data:{
-          tableName:'fakesubmissions',
+          tableName:'submissions',
           crudtype:'create',
           cols:[
             {key:'quarter',val:1},
@@ -532,7 +532,7 @@
             {key:'budgeting_number',val:'1223'},
             {key:'subject',val:$('#subject').val()},
             {key:'submission_date',val:getDt({date:$('#submissiondate input').val(),format:'mysql'})},
-            {key:'staff_name',val:'bruno'},
+            {key:'staff_name',val:username},
             {key:'implementation_target',val:getDt({date:$('#implementationdate input').val(),format:'mysql'})},
             {key:'purchase_target',val:getDt({date:$('#purchasedate input').val(),format:'mysql'})}
 
@@ -541,18 +541,18 @@
         }
       })
       .done(res=>{
-        console.log('Res fakesubmissions',res)
+        console.log('Res submissions',res)
         $.ajax({
         url:'/crud/',
         type:'post',
         data:{
-          tableName:'fakesubmission_details',
+          tableName:'submission_details',
           crudtype:'create',
           cols:[
             {key:'submission_id',val:res.insertId},  
             {key:'vendor_id',val:$('#proposedvendor').val()},
             {key:'product_id',val:$('#productdetail').val()},
-            {key:'itemname',val:$('#partnumber').val()},
+            {key:'itemname',val:$('#productdetail :selected').text()},
             {key:'brand',val:$('#brand').val()},
             {key:'partnumber',val:$('#partnumber').val()},
             {key:'description',val:$('#description').val()},
@@ -565,19 +565,20 @@
             {key:'purchase_reason',val:$('#purchase_reason').val()},
             {key:'placement_location',val:$('#placement_location').val()},
             {key:'guarantee',val:$('#guarantee').val()},
-            {key:'note',val:$('#note').val()}
+            {key:'note',val:$('#note').val()},
+            {key:'createuser',val:username}
           ]
         }
       })
       .done(res=>{
-        console.log('Res fakesubmissiondetails',res)
+        console.log('Res submissiondetails',res)
       })
       .fail(err=>{
-        console.log('Err fakesubmissiondetails',err)
+        console.log('Err submissiondetails',err)
       })
       })
       .fail(err=>{
-        console.log('Err fakesubmissions',err)
+        console.log('Err submissions',err)
       })
     })
     $('#btnVerify').on('click',function(){})
