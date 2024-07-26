@@ -176,10 +176,16 @@
   $(function () {
     $('#mainmenu').click()
     console.log('roles',roles)
+    console.log('username',username)
     editvisibility = "none"
     roles = [roles].forEach(role => {
-      console.log('ROle',role)
+      console.log('ROleee',role)
     });
+    if([roles].includes(6)){
+      console.log('sales1')
+    }else{
+      console.log('bukan sales1')
+    }
     approval = ([roles].includes(3))?"block":"none"
     plafoncreator = ([roles].includes(8))?"block":"none"
     realizationauth = ([roles].includes(9))?"block":"none"
@@ -203,6 +209,12 @@
         text: '<i class="fa-solid fa-ticket"></i> Pengajuan Pembelian',
         className:'btn btn-success addticket',
         action: function ( e, tObj, node, config ) {
+          console.log('roles',roles)
+          if([roles].includes(6)){
+            console.log('sales')
+          }else{
+            console.log('bukan sales')
+          }
           toDate = getDt({
             date:getTodayDate(),
             format:'human'
