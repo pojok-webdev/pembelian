@@ -27,6 +27,8 @@ select2 = require('./../routers/select2'),
 select2b = require('./../routers/select2b'),
 select2datafactory3 = require('./../routers/select2datafactory3'),
 master = require("./../routers/master"),
+submissions = require("./../models/submissions"),
+submission_details = require("./../models/submission_details"),
 odoorouter = require('./../routers/odooRouter')
 app.set('views', './views');
 app.set('view engine','ejs')
@@ -59,5 +61,6 @@ module.exports = {
     odoorouter:odoorouter,oribudgeting:oribudgeting,
     odooproducts:odooproducts,odooproductcategories:odooproductcategories,
     odoowithnosites:odoowithnosites,
-    crud:crud
+    crud:crud,
+    submission_details:submission_details,submissions:submissions
 }

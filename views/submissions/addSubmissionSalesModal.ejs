@@ -1,8 +1,8 @@
-<div class="modal fade" id="add-submission">
+<div class="modal fade" id="add-submission-sales">
     <div class="modal-dialog modal-xl">
       <div class="modal-content bg">
         <div class="modal-header">
-          <h4 class="modal-title">Pengajuan Pembelian <span id="modalAddSubmit"></span></h4>
+          <h4 class="modal-title">Pengajuan Pembelian <span id="modalAddSubmit">Sales</span></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -13,47 +13,28 @@
               <div class="card card-primary">
                   <div class="card-body">
                       <div class="form-group row ">
-                          <label for="lblJenis" class="col-sm-4 col-form-label">Submission Date</label>
-                          <div class="col-sm-8 input-group date" id="submissiondate" data-target-input="nearest">
-                            <input type="text" class="form-control_ datetimepicker-input" data-target="#submissiondate"/>
-                            <div class="input-group-append" data-target="#submissiondate" data-toggle="datetimepicker">
+                          <label for="lblJenis" class="col-sm-4 col-form-label">Impl Target</label>
+                          <div class="col-sm-8 input-group date" id="simplementationdate" data-target-input="nearest">
+                            <input type="text" class="form-control_ datetimepicker-input" data-target="#simplementationdate"/>
+                            <div class="input-group-append" data-target="#simplementationdate" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="far fa-clock"></i></div>
                             </div>
                           </div>
                         </div>
-                      <div class="form-group row">
-                        <label for="nama" class="col-sm-4 col-form-label">Staff Name</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="staffname">
-                          </div>
-                      </div>
                   </div>
               </div>
             </div>
             <div class="col-md-6">
             <div class="card card-primary">
                 <div class="card-body">
-                    <div class="form-group row ">
-                        <label for="lblJenis" class="col-sm-4 col-form-label">Implementation Date</label>
-                        <div class="col-sm-8 input-group date" id="implementationdate" data-target-input="nearest">
-                          <input type="text" class="form-control_ datetimepicker-input" data-target="#implementationdate"/>
-                          <div class="input-group-append" data-target="#implementationdate" data-toggle="datetimepicker">
-                              <div class="input-group-text"><i class="far fa-clock"></i></div>
-                          </div>
-                        </div>                    
-                      </div>
                     <div class="form-group row">
                       <label for="nama" class="col-sm-4 col-form-label">Purchase Date</label>
-                      <div class="col-sm-8 input-group date" id="purchasedate" data-target-input="nearest">
-                        <input type="text" class="form-control_ datetimepicker-input" data-target="#purchasedate"/>
-                        <div class="input-group-append" data-target="#purchasedate" data-toggle="datetimepicker">
+                      <div class="col-sm-8 input-group date" id="spurchasedate" data-target-input="nearest">
+                        <input type="text" class="form-control_ datetimepicker-input" data-target="#spurchasedate"/>
+                        <div class="input-group-append" data-target="#spurchasedate" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                         </div>
                       </div>
-                    </div>
-                  <div class="form-group" style="display: none;">
-                        <label for="inpKeterangan">Keterangan</label>
-                        <textarea class="form-control" id="inpKeterangan" ></textarea><br>
                     </div>
                 </div>
               </div>
@@ -74,18 +55,6 @@
             <div class="col-md-6">
               <div class="card card-primary">
                   <div class="card-body">
-                      <div class="form-group row ">
-                          <label for="lblJenis" class="col-sm-4 col-form-label">Peruntukan</label>
-                          <div class="col-sm-8">
-                            <select id="peruntukan"></select>
-                          </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="nama" class="col-sm-4 col-form-label">Kategori Produk</label>
-                        <div class="col-sm-8">
-                            <select id="itemname"></select>
-                          </div>
-                      </div>
                       <div class="form-group row">
                         <label for="nama" class="col-sm-4 col-form-label">Item Detail</label>
                         <div class="col-sm-8">
@@ -104,12 +73,6 @@
                             <input type="text" id="brand">
                           </div>
                       </div>
-                      <div class="form-group row">
-                        <label for="nama" class="col-sm-4 col-form-label">Proposed Vendor</label>
-                        <div class="col-sm-8">
-                            <select id="proposedvendor"></select>
-                          </div>
-                      </div>
                   </div>
               </div>
             </div>
@@ -119,44 +82,20 @@
                     <div class="form-group row ">
                       <label for="subject" class="col-sm-4 col-form-label">Subject</label>
                       <div class="col-sm-8">
-                        <input type="text" id="subject">
+                        <input type="text" id="ssubject">
                       </div>
                     </div>
                     <div class="form-group row ">
-                        <label for="lblJenis" class="col-sm-4 col-form-label">Proposed Price</label>
-                        <div class="col-sm-8">
-                          <input type="text" id="proposedprice" type="number" value="0">
-                        </div>
+                      <label for="spurchase_reason" class="col-sm-4 col-form-label">Purhcase Reason</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="spurchase_reason" name="spurchase_reason">
+                      </div>
                     </div>
                     <div class="form-group row">
                       <label for="nama" class="col-sm-4 col-form-label">Amount</label>
                       <div class="col-sm-8">
-                          <input type="text" id="amount" type="number" value="1">
+                          <input type="number" id="samount" type="number" name="samount" value="1">
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="discountlevel" class="col-sm-4 col-form-label">Discount Level</label>
-                        <div class="col-sm-8">
-                            <input class="form-controlx" id="discountlevel" type="number" value="0">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="proposedtotalprice" class="col-sm-4 col-form-label">Proposed Total Price</label>
-                        <div class="col-sm-8">
-                            <input id="proposedtotalprice"  type="number" value="0">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="guarantee" class="col-sm-4 col-form-label">Guarantee</label>
-                      <div class="col-sm-8">
-                          <input id="guarantee" >
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="proposedtotalprice" class="col-sm-4 col-form-label">Note</label>
-                      <div class="col-sm-8">
-                          <input id="note" >
-                      </div>
                     </div>
                 </div>
               </div>
@@ -165,7 +104,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnSaveSubmission">Simpan</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnsSaveSubmission">Simpan</button>
         </div>
       </div>
       <!-- /.modal-content -->

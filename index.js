@@ -276,6 +276,23 @@ i.app.get('/summary/:mode/:id',(req,res)=>{
 
   }
 })
+i.app.get('/duplicate/:type/:id',(req,res)=>{
+  params = req.params
+  switch(params.type){
+    case 'submission_details':
+      console.log('query submission_details',i.submission_details.duplicate({id:params.id}))
+      i.con.doQuery(i.submission_details.duplicate({id:params.id}),result=>{
+        res.send(result)
+      })
+    break
+    case 'submissions':
+      console.log('query submissions',i.submissions.duplicate({id:params.id}))
+      i.con.doQuery(i.submissions.duplicate({id:params.id}),result=>{
+        res.send(result)
+      })
+    break
+  }
+})
 i.app.get('/submissiondetail/:type/:submission_id/:submission_detail_id',(req,res)=>{
   params = req.params
   switch(params.type){
@@ -494,6 +511,9 @@ i.app.get('/odoowithnosites',(req,res)=>{
     //console.log("objs",objs)
     res.send({"data":objs})
   }) 
+})
+i.app.get('/categoriesproducts',(req,res)=>{
+  res.render('categoriesproducts/table',{})
 })
 i.app.listen(i.setting.port,_=>{
     console.log('PadiTech Pembelian start at port ',i.setting.port)

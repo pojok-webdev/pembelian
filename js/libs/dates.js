@@ -110,3 +110,36 @@ getDt = obj => {
   }
   return out
 }
+
+tmpDate = new Date()
+yr = tmpDate.getFullYear()
+mn = tmpDate.getMonth()+1
+dt = tmpDate.getDate()
+console.log('Year',yr)
+console.log('Month',mn)
+_getQuarter = obj => {
+  if(obj.num>=1&&obj.num<4){
+    return 1
+  }
+  if(obj.num>=4&&obj.num<7){
+    return 2
+  }
+  if(obj.num>=7&&obj.num<10){
+    return 3
+  }
+  if(obj.num>=11&&obj.num<=12){
+    return 4
+  }
+}
+getYear = _ => {
+  return yr
+}
+getMonth = _ => {
+  return mn
+}
+getDate = _ => {
+  return dt
+}
+getQuarter = _ => {
+  return _getQuarter({num:getMonth()})
+}
